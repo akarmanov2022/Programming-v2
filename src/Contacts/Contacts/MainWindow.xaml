@@ -4,7 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Contacts"
+        xmlns:viewModel="clr-namespace:Contacts.ViewModel"
         mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance viewModel:MainVm}"
         Title="MainWindow"
         Height="550"
         Width="800">
@@ -55,7 +57,9 @@
                         <TextBox Grid.Column="1" />
                     </Grid>
                     <ListBox Grid.Row="1"
-                             Margin="3" />
+                             Margin="3"
+                             SelectedItem="{Binding .SelectedContact}"
+                             ItemsSource="{Binding .Contacts}" ></ListBox>
                     <Grid Grid.Row="2">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
@@ -70,7 +74,9 @@
                         <Button Grid.Column="2"
                                 Content="Remove" />
                         <Button Grid.Column="3"
-                                Content="Generate" />
+                                Content="Generate"
+                                Command="{Binding .GenerateCommand}"
+                                CommandParameter="{Binding .SelectedContact}"/>
                     </Grid>
                 </Grid>
             </Border>
@@ -83,7 +89,7 @@
         <Grid Grid.Column="2">
             <Border>
                 <StackPanel Orientation="Vertical">
-                    <Grid>
+                    <Grid DataContext="{Binding .SelectedContact}">
                         <Grid.RowDefinitions>
                             <RowDefinition />
                             <RowDefinition />
@@ -98,11 +104,18 @@
                         <StackPanel Grid.Column="1"
                                     Grid.Row="0">
                             <TextBlock Text="Name:" />
-                            <TextBox />
+                            <TextBox>
+                                <TextBox.Text>
+                                    <MultiBinding StringFormat="{}{0} {1}">
+                                        <Binding Path="FirstName" />
+                                        <Binding Path="LastName" />
+                                    </MultiBinding>
+                                </TextBox.Text>
+                            </TextBox>
                             <TextBlock Text="Phone Number:" />
-                            <TextBox />
+                            <TextBox Text="{Binding .Phone}" />
                             <TextBlock Text="Email:" />
-                            <TextBox />
+                            <TextBox Text="{Binding .Email}" />
                         </StackPanel>
                         <Button Grid.Row="1"
                                 Grid.Column="0"

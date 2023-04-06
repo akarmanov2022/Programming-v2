@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Contacts.Model;
+using Contacts.ViewModel;
 
 namespace Contacts
 {
@@ -23,6 +25,7 @@ namespace Contacts
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = new MainVm();
         }
     }
 }
