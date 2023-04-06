@@ -37,6 +37,12 @@
       "frameworks": {
         "net7.0-windows7.0": {
           "targetAlias": "net7.0-windows",
+          "dependencies": {
+            "CommunityToolkit.Mvvm": {
+              "target": "Package",
+              "version": "[8.2.0-preview2, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",

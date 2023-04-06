@@ -5,6 +5,66 @@
         <TargetFramework>net7.0-windows</TargetFramework>
         <Nullable>enable</Nullable>
         <UseWPF>true</UseWPF>
+        <ApplicationIcon>Resources\Img\ContactsApp_96x96.ico</ApplicationIcon>
     </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.0-preview2" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Resources\Img\add_contact_32x32.png" />
+      <Resource Include="Resources\Img\add_contact_32x32.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
+      <None Remove="Resources\Img\add_contact_32x32_gray.png" />
+      <Resource Include="Resources\Img\add_contact_32x32_gray.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
+      <None Remove="Resources\Img\add_photo_32x32.png" />
+      <Resource Include="Resources\Img\add_photo_32x32.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
+      <None Remove="Resources\Img\add_photo_32x32_gray.png" />
+      <Resource Include="Resources\Img\add_photo_32x32_gray.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
+      <None Remove="Resources\Img\close_32x32.png" />
+      <Resource Include="Resources\Img\close_32x32.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
+      <None Remove="Resources\Img\collapse_32x32.png" />
+      <Resource Include="Resources\Img\collapse_32x32.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
+      <None Remove="Resources\Img\ContactsApp_96x96.ico" />
+      <Resource Include="Resources\Img\ContactsApp_96x96.ico">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
+      <None Remove="Resources\Img\edit_contact_32x32.png" />
+      <Resource Include="Resources\Img\edit_contact_32x32.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
+      <None Remove="Resources\Img\edit_contact_32x32_gray.png" />
+      <Resource Include="Resources\Img\edit_contact_32x32_gray.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
+      <None Remove="Resources\Img\info_48x48.png" />
+      <Resource Include="Resources\Img\info_48x48.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
+      <None Remove="Resources\Img\photo_placeholder_100x100.png" />
+      <Resource Include="Resources\Img\photo_placeholder_100x100.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
+      <None Remove="Resources\Img\remove_contact_32x32.png" />
+      <Resource Include="Resources\Img\remove_contact_32x32.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
+      <None Remove="Resources\Img\remove_contact_32x32_gray.png" />
+      <Resource Include="Resources\Img\remove_contact_32x32_gray.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
+    </ItemGroup>
 
 </Project>

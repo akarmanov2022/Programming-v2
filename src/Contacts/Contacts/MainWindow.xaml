@@ -5,8 +5,111 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Contacts"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow"
+        Height="550"
+        Width="800">
     <Grid>
-
+        <Grid.Resources>
+            <Style TargetType="Border">
+                <Setter Property="Padding"
+                        Value="8">
+                </Setter>
+            </Style>
+            <Style TargetType="Button">
+                <Setter Property="Margin"
+                        Value="3">
+                </Setter>
+            </Style>
+            <Style TargetType="TextBlock">
+                <Setter Property="Margin"
+                        Value="3">
+                </Setter>
+            </Style>
+            <Style TargetType="TextBox">
+                <Setter Property="Margin"
+                        Value="3">
+                </Setter>
+            </Style>
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid Background="#f8f8f8"
+              MinWidth="250">
+            <Border>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0"
+                                   Text="Find:" />
+                        <TextBox Grid.Column="1" />
+                    </Grid>
+                    <ListBox Grid.Row="1"
+                             Margin="3" />
+                    <Grid Grid.Row="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0"
+                                Content="Add" />
+                        <Button Grid.Column="1"
+                                Content="Edit" />
+                        <Button Grid.Column="2"
+                                Content="Remove" />
+                        <Button Grid.Column="3"
+                                Content="Generate" />
+                    </Grid>
+                </Grid>
+            </Border>
+        </Grid>
+        <GridSplitter Grid.Column="1"
+                      ShowsPreview="False"
+                      Width="3"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Stretch" />
+        <Grid Grid.Column="2">
+            <Border>
+                <StackPanel Orientation="Vertical">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Image Grid.Column="0"
+                               Grid.Row="0"
+                               Source="Resources/Img/photo_placeholder_100x100.png" />
+                        <StackPanel Grid.Column="1"
+                                    Grid.Row="0">
+                            <TextBlock Text="Name:" />
+                            <TextBox />
+                            <TextBlock Text="Phone Number:" />
+                            <TextBox />
+                            <TextBlock Text="Email:" />
+                            <TextBox />
+                        </StackPanel>
+                        <Button Grid.Row="1"
+                                Grid.Column="0"
+                                Content="Apply" />
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </Grid>
     </Grid>
 </Window>

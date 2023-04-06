@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "TUoSBpNOsQQDtVNn+v5s3y7DuI6F/auGWq/f7EcCEpFqs0z4W5ztU6KqdS/woFyizg2nMLubV8nWynt6Q4+cYg==",
+  "dgSpecHash": "Hel1PDl7e3iuY1RN+rCaUQKRbq0RxHkdfTSYsCRzAgBrXfwMBE+gLcaa6wQ6EbdEm8NOPkQXoJWYMF5PgHHn4w==",
   "success": true,
   "projectFilePath": "D:\\Workspace\\TUSUR\\OOP\\Programming-v2\\src\\Contacts\\Contacts\\Contacts.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\arsen\\.nuget\\packages\\communitytoolkit.mvvm\\8.2.0-preview2\\communitytoolkit.mvvm.8.2.0-preview2.nupkg.sha512"
+  ],
   "logs": []
 }
