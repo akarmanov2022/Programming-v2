@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using static System.Environment;
 
@@ -15,6 +10,9 @@ namespace Contacts
     /// </summary>
     public partial class App : Application
     {
+        /// <summary>
+        /// Хранит путь к папке с сохранениями.
+        /// </summary>
         public static readonly string DefaultSavePath = 
             Path.Combine(GetFolderPath(SpecialFolder.MyDocuments), nameof(Contacts));
         

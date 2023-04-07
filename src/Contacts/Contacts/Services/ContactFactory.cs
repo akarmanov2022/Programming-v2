@@ -6,10 +6,20 @@ using Contacts.Model;
 
 namespace Contacts.Services;
 
+/// <summary>
+/// Фабрика контактов.
+/// </summary>
 public static class ContactFactory
 {
+    /// <summary>
+    /// Хранит экземпляр <see cref="HttpClient"/>.
+    /// </summary>
     private static readonly HttpClient Http = new();
 
+    /// <summary>
+    /// Генерирует случайный контакт. Через API сервиса randomdatatools.ru.
+    /// </summary>
+    /// <returns>Случайный контакт.</returns>
     public static Contact? RandomGenerate()
     {
         try
