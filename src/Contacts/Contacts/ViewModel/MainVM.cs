@@ -36,9 +36,16 @@ public class MainVm : INotifyPropertyChanged
 
     private RelayCommand? _removeCommand;
 
+    private RelayCommand? _closeWindowCommand;
+
+    public MainVm(ObservableCollection<Contact> contacts)
+    {
+        Contacts = contacts;
+    }
+
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    public ObservableCollection<Contact> Contacts { get; } = new();
+    public ObservableCollection<Contact> Contacts { get; }
 
     public Visibility ApplyVisibility
     {
@@ -86,8 +93,7 @@ public class MainVm : INotifyPropertyChanged
         }
     }
 
-    public RelayCommand GenerateCommand => _generateCommand ??= new RelayCommand(
-        () =>
+    public RelayCommand GenerateCommand => _generateCommand ??= new RelayCommand(() =>
         {
             var contact = ContactFactory.RandomGenerate();
             if (contact == null) return;
@@ -95,8 +101,7 @@ public class MainVm : INotifyPropertyChanged
         }
     );
 
-    public RelayCommand AddCommand => _addCommand ??= new RelayCommand(
-        () =>
+    public RelayCommand AddCommand => _addCommand ??= new RelayCommand(() =>
         {
             SelectedContact = new Contact();
             ApplyVisibility = Visible;
@@ -107,20 +112,18 @@ public class MainVm : INotifyPropertyChanged
         }
     );
 
-    public RelayCommand ApplyCommand => _applyCommand ??= new RelayCommand(
-        () =>
+    public RelayCommand ApplyCommand => _applyCommand ??= new RelayCommand(() =>
         {
             IsReadOnly = true;
             IsAddEnabled = true;
             ApplyVisibility = Hidden;
-            
+
             if (IsEditing) return;
             Contacts.Add(SelectedContact);
         }
     );
 
-    public RelayCommand EditCommand => _editCommand ??= new RelayCommand(
-        () =>
+    public RelayCommand EditCommand => _editCommand ??= new RelayCommand(() =>
         {
             ApplyVisibility = Visible;
             IsAddEnabled = false;
@@ -131,8 +134,7 @@ public class MainVm : INotifyPropertyChanged
         }
     );
 
-    public RelayCommand RemoveCommand => _removeCommand ??= new RelayCommand(
-        () =>
+    public RelayCommand RemoveCommand => _removeCommand ??= new RelayCommand(() =>
         {
             Contacts.Remove(SelectedContact);
             SelectedContact = new Contact();
@@ -141,6 +143,9 @@ public class MainVm : INotifyPropertyChanged
             IsRemoveEnabled = false;
         }
     );
+
+    public RelayCommand CloseWindowCommand => _closeWindowCommand ??= new RelayCommand(() =>
+        Serializer<ObservableCollection<Contact>>.ToJson(Contacts, App.DefaultSavePath));
 
     protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
