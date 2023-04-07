@@ -148,7 +148,7 @@ public class MainVm : INotifyPropertyChanged
     public Contact SelectedContact
     {
         get => _selectedContact;
-        private set
+        set
         {
             SetField(ref _selectedContact, value);
             ApplyVisibility = Hidden;
