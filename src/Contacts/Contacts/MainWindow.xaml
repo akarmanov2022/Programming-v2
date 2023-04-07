@@ -70,20 +70,20 @@
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
                         <Button Grid.Column="0"
-                                IsEnabled="{Binding .IsEnabled}"
+                                IsEnabled="{Binding .IsAddEnabled}"
                                 Command="{Binding .AddCommand}"
                                 Content="Add" />
                         <Button Grid.Column="1"
-                                IsEnabled="{Binding .IsEnabled}"
+                                IsEnabled="{Binding .IsEditEnabled}"
+                                Command="{Binding .EditCommand}"
                                 Content="Edit" />
                         <Button Grid.Column="2"
-                                IsEnabled="{Binding .IsEnabled}"
+                                IsEnabled="{Binding .IsRemoveEnabled}"
+                                Command="{Binding .RemoveCommand}"
                                 Content="Remove" />
                         <Button Grid.Column="3"
                                 Content="Generate"
-                                IsEnabled="{Binding .IsEnabled}"
-                                Command="{Binding .GenerateCommand}"
-                                CommandParameter="{Binding .SelectedContact}" />
+                                Command="{Binding .GenerateCommand}" />
                     </Grid>
                 </Grid>
             </Border>
@@ -111,23 +111,21 @@
                         <StackPanel Grid.Column="1"
                                     Grid.Row="0">
                             <TextBlock Text="Name:" />
-                            <TextBox IsReadOnly="{Binding .IsReadOnly}"
-                                     Text="{Binding SelectedContact.LastName, 
-                                     UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBox Name="TbName" IsReadOnly="{Binding .IsReadOnly}"
+                                     Text="{Binding SelectedContact.LastName, UpdateSourceTrigger=Explicit}" />
                             <TextBlock Text="Phone Number:" />
-                            <TextBox
-                                Text="{Binding SelectedContact.Phone,
-                                UpdateSourceTrigger=PropertyChanged}"
+                            <TextBox Name="TbPhone"
+                                Text="{Binding SelectedContact.Phone, UpdateSourceTrigger=Explicit}"
                                 IsReadOnly="{Binding .IsReadOnly}" />
                             <TextBlock Text="Email:" />
-                            <TextBox
-                                Text="{Binding SelectedContact.Email,
-                                UpdateSourceTrigger=PropertyChanged}"
+                            <TextBox Name="TbEmail"
+                                Text="{Binding SelectedContact.Email, UpdateSourceTrigger=Explicit}"
                                 IsReadOnly="{Binding .IsReadOnly}" />
                         </StackPanel>
                         <Button Grid.Row="1"
                                 Grid.Column="0"
-                                Visibility="{Binding .Visibility}"
+                                Visibility="{Binding .ApplyVisibility}"
+                                Click="ApplyButton_OnClick"
                                 Command="{Binding .ApplyCommand}"
                                 CommandParameter="{Binding .SelectedContact}"
                                 Content="Apply" />

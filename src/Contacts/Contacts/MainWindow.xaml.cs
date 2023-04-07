@@ -27,5 +27,12 @@ namespace Contacts
             InitializeComponent();
             DataContext = new MainVm();
         }
+
+        private void ApplyButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            TbName.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
+            TbEmail.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
+            TbPhone.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
+        }
     }
 }

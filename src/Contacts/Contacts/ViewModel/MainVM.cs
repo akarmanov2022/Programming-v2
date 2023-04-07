@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Data;
 using CommunityToolkit.Mvvm.Input;
 using Contacts.Model;
 using Contacts.Services;
@@ -16,30 +18,40 @@ public class MainVm : INotifyPropertyChanged
 
     private bool _isReadOnly = true;
 
-    private bool _isEnabled = true;
+    private bool _isAddEnabled = true;
 
-    private Visibility _visibility = Hidden;
+    private bool _isEditEnabled;
+
+    private bool _isRemoveEnabled;
+
+    private Visibility _applyVisibility = Hidden;
 
     private RelayCommand? _generateCommand;
 
     private RelayCommand? _addCommand;
 
-    private RelayCommand<Contact>? _applyCommand;
+    private RelayCommand? _editCommand;
+
+    private RelayCommand? _applyCommand;
+
+    private RelayCommand? _removeCommand;
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
     public ObservableCollection<Contact> Contacts { get; } = new();
 
-    public bool IsEnabled
+    public Visibility ApplyVisibility
     {
-        get => _isEnabled;
-        set => SetField(ref _isEnabled, value);
+        get => _applyVisibility;
+        set => SetField(ref _applyVisibility, value);
     }
 
-    public Visibility Visibility
+    public bool IsEditing { get; set; }
+
+    public bool IsAddEnabled
     {
-        get => _visibility;
-        set => SetField(ref _visibility, value);
+        get => _isAddEnabled;
+        set => SetField(ref _isAddEnabled, value);
     }
 
     public bool IsReadOnly
@@ -48,10 +60,30 @@ public class MainVm : INotifyPropertyChanged
         private set => SetField(ref _isReadOnly, value);
     }
 
+    public bool IsEditEnabled
+    {
+        get => _isEditEnabled;
+        set => SetField(ref _isEditEnabled, value);
+    }
+
+    public bool IsRemoveEnabled
+    {
+        get => _isRemoveEnabled;
+        set => SetField(ref _isRemoveEnabled, value);
+    }
+
     public Contact SelectedContact
     {
         get => _selectedContact;
-        set => SetField(ref _selectedContact, value);
+        set
+        {
+            SetField(ref _selectedContact, value);
+            ApplyVisibility = Hidden;
+            IsReadOnly = true;
+            IsAddEnabled = true;
+            IsRemoveEnabled = true;
+            IsEditEnabled = true;
+        }
     }
 
     public RelayCommand GenerateCommand => _generateCommand ??= new RelayCommand(
@@ -66,21 +98,47 @@ public class MainVm : INotifyPropertyChanged
     public RelayCommand AddCommand => _addCommand ??= new RelayCommand(
         () =>
         {
-            IsEnabled = false;
-            IsReadOnly = false;
-            Visibility = Visible;
             SelectedContact = new Contact();
+            ApplyVisibility = Visible;
+            IsAddEnabled = false;
+            IsEditEnabled = false;
+            IsRemoveEnabled = false;
+            IsReadOnly = false;
         }
     );
 
-    public RelayCommand<Contact> ApplyCommand => _applyCommand ??= new RelayCommand<Contact>(
-        contact =>
+    public RelayCommand ApplyCommand => _applyCommand ??= new RelayCommand(
+        () =>
         {
-            if (contact == null) return;
             IsReadOnly = true;
-            IsEnabled = true;
-            Visibility = Hidden;
-            Contacts.Add(contact);
+            IsAddEnabled = true;
+            ApplyVisibility = Hidden;
+            
+            if (IsEditing) return;
+            Contacts.Add(SelectedContact);
+        }
+    );
+
+    public RelayCommand EditCommand => _editCommand ??= new RelayCommand(
+        () =>
+        {
+            ApplyVisibility = Visible;
+            IsAddEnabled = false;
+            IsEditEnabled = false;
+            IsRemoveEnabled = false;
+            IsReadOnly = false;
+            IsEditing = true;
+        }
+    );
+
+    public RelayCommand RemoveCommand => _removeCommand ??= new RelayCommand(
+        () =>
+        {
+            Contacts.Remove(SelectedContact);
+            SelectedContact = new Contact();
+            if (Contacts.Count != 0) return;
+            IsEditEnabled = false;
+            IsRemoveEnabled = false;
         }
     );
 

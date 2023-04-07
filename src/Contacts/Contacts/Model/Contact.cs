@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace Contacts.Model;
 
-public class Contact : INotifyPropertyChanged
+public sealed class Contact : INotifyPropertyChanged
 {
     private string _firstName = "";
 
@@ -13,6 +14,18 @@ public class Contact : INotifyPropertyChanged
     private string _email = "";
 
     private string _phone = "";
+
+    private Contact(Contact contact)
+    {
+        FirstName = contact.FirstName;
+        LastName = contact.LastName;
+        Email = contact.Email;
+        Phone = contact.Phone;
+    }
+
+    public Contact()
+    {
+    }
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -40,7 +53,7 @@ public class Contact : INotifyPropertyChanged
         set => SetField(ref _phone, value);
     }
 
-    protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+    private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
@@ -51,5 +64,10 @@ public class Contact : INotifyPropertyChanged
         field = value;
         OnPropertyChanged(propertyName);
         return true;
+    }
+
+    public static Contact CopyOf(Contact contact)
+    {
+        return new Contact(contact);
     }
 }
