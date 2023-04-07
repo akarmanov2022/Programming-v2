@@ -58,8 +58,10 @@
                     </Grid>
                     <ListBox Grid.Row="1"
                              Margin="3"
+                             DisplayMemberPath="LastName"
                              SelectedItem="{Binding .SelectedContact}"
-                             ItemsSource="{Binding .Contacts}" ></ListBox>
+                             ItemsSource="{Binding .Contacts}">
+                    </ListBox>
                     <Grid Grid.Row="2">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
@@ -68,15 +70,20 @@
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
                         <Button Grid.Column="0"
+                                IsEnabled="{Binding .IsEnabled}"
+                                Command="{Binding .AddCommand}"
                                 Content="Add" />
                         <Button Grid.Column="1"
+                                IsEnabled="{Binding .IsEnabled}"
                                 Content="Edit" />
                         <Button Grid.Column="2"
+                                IsEnabled="{Binding .IsEnabled}"
                                 Content="Remove" />
                         <Button Grid.Column="3"
                                 Content="Generate"
+                                IsEnabled="{Binding .IsEnabled}"
                                 Command="{Binding .GenerateCommand}"
-                                CommandParameter="{Binding .SelectedContact}"/>
+                                CommandParameter="{Binding .SelectedContact}" />
                     </Grid>
                 </Grid>
             </Border>
@@ -89,7 +96,7 @@
         <Grid Grid.Column="2">
             <Border>
                 <StackPanel Orientation="Vertical">
-                    <Grid DataContext="{Binding .SelectedContact}">
+                    <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition />
                             <RowDefinition />
@@ -104,21 +111,25 @@
                         <StackPanel Grid.Column="1"
                                     Grid.Row="0">
                             <TextBlock Text="Name:" />
-                            <TextBox>
-                                <TextBox.Text>
-                                    <MultiBinding StringFormat="{}{0} {1}">
-                                        <Binding Path="FirstName" />
-                                        <Binding Path="LastName" />
-                                    </MultiBinding>
-                                </TextBox.Text>
-                            </TextBox>
+                            <TextBox IsReadOnly="{Binding .IsReadOnly}"
+                                     Text="{Binding SelectedContact.LastName, 
+                                     UpdateSourceTrigger=PropertyChanged}" />
                             <TextBlock Text="Phone Number:" />
-                            <TextBox Text="{Binding .Phone}" />
+                            <TextBox
+                                Text="{Binding SelectedContact.Phone,
+                                UpdateSourceTrigger=PropertyChanged}"
+                                IsReadOnly="{Binding .IsReadOnly}" />
                             <TextBlock Text="Email:" />
-                            <TextBox Text="{Binding .Email}" />
+                            <TextBox
+                                Text="{Binding SelectedContact.Email,
+                                UpdateSourceTrigger=PropertyChanged}"
+                                IsReadOnly="{Binding .IsReadOnly}" />
                         </StackPanel>
                         <Button Grid.Row="1"
                                 Grid.Column="0"
+                                Visibility="{Binding .Visibility}"
+                                Command="{Binding .ApplyCommand}"
+                                CommandParameter="{Binding .SelectedContact}"
                                 Content="Apply" />
                     </Grid>
                 </StackPanel>

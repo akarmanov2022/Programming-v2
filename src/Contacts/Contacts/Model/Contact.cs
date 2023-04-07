@@ -40,8 +40,6 @@ public class Contact : INotifyPropertyChanged
         set => SetField(ref _phone, value);
     }
 
-    public string FullName => $"{FirstName} {LastName}";
-
     protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -53,10 +51,5 @@ public class Contact : INotifyPropertyChanged
         field = value;
         OnPropertyChanged(propertyName);
         return true;
-    }
-
-    public override string ToString()
-    {
-        return FullName;
     }
 }
