@@ -23,22 +23,22 @@ public class MainVm : INotifyPropertyChanged
     /// <summary>
     /// Хранит значение, указывающее, что поля доступны только для чтения.
     /// </summary>
-    private bool _isReadOnly = true;
+    private bool _readOnly = true;
 
     /// <summary>
     /// Хранит значение, указывающее, что кнопка добавления доступна.
     /// </summary>
-    private bool _isAddEnabled = true;
+    private bool _addEnabled = true;
 
     /// <summary>
     /// Хранит значение, указывающее, что кнопка редактирования доступна.
     /// </summary>
-    private bool _isEditEnabled;
+    private bool _editEnabled;
 
     /// <summary>
     /// Хранит значение, указывающее, что кнопка удаления доступна.
     /// </summary>
-    private bool _isRemoveEnabled;
+    private bool _removeEnabled;
 
     /// <summary>
     /// Хранит значение, указывающее, что кнопка применения изменений доступна.
@@ -104,42 +104,42 @@ public class MainVm : INotifyPropertyChanged
     /// <summary>
     /// Устанавливает и возвращает значение, указывающее, что происходит редактирование контакта.
     /// </summary>
-    private bool IsEditing { get; set; }
+    private bool Editing { get; set; }
 
     /// <summary>
     /// Устанавливает и возвращает значение, указывающее, что поля доступны только для чтения.
     /// </summary>
-    public bool IsAddEnabled
+    public bool AddEnabled
     {
-        get => _isAddEnabled;
-        private set => SetField(ref _isAddEnabled, value);
+        get => _addEnabled;
+        private set => SetField(ref _addEnabled, value);
     }
 
     /// <summary>
     /// Устанавливает и возвращает значение, указывающее, что поля доступны только для чтения.
     /// </summary>
-    public bool IsReadOnly
+    public bool ReadOnly
     {
-        get => _isReadOnly;
-        private set => SetField(ref _isReadOnly, value);
+        get => _readOnly;
+        private set => SetField(ref _readOnly, value);
     }
 
     /// <summary>
     /// Устанавливает и возвращает значение, указывающее, что кнопка редактирования доступна.
     /// </summary>
-    public bool IsEditEnabled
+    public bool EditEnabled
     {
-        get => _isEditEnabled;
-        private set => SetField(ref _isEditEnabled, value);
+        get => _editEnabled;
+        private set => SetField(ref _editEnabled, value);
     }
 
     /// <summary>
     /// Устанавливает и возвращает значение, указывающее, что кнопка удаления доступна.
     /// </summary>
-    public bool IsRemoveEnabled
+    public bool RemoveEnabled
     {
-        get => _isRemoveEnabled;
-        private set => SetField(ref _isRemoveEnabled, value);
+        get => _removeEnabled;
+        private set => SetField(ref _removeEnabled, value);
     }
 
     /// <summary>
@@ -152,10 +152,10 @@ public class MainVm : INotifyPropertyChanged
         {
             SetField(ref _selectedContact, value);
             ApplyVisibility = Hidden;
-            IsReadOnly = true;
-            IsAddEnabled = true;
-            IsRemoveEnabled = true;
-            IsEditEnabled = true;
+            ReadOnly = true;
+            AddEnabled = true;
+            RemoveEnabled = true;
+            EditEnabled = true;
         }
     }
 
@@ -164,7 +164,7 @@ public class MainVm : INotifyPropertyChanged
     /// </summary>
     public RelayCommand GenerateCommand => _generateCommand ??= new RelayCommand(() =>
         {
-            var contact = ContactFactory.RandomGenerate();
+            var contact = ContactFactory.RandomContact();
             if (contact == null) return;
             Contacts.Add(contact);
         }
@@ -177,10 +177,10 @@ public class MainVm : INotifyPropertyChanged
         {
             SelectedContact = new Contact();
             ApplyVisibility = Visible;
-            IsAddEnabled = false;
-            IsEditEnabled = false;
-            IsRemoveEnabled = false;
-            IsReadOnly = false;
+            AddEnabled = false;
+            EditEnabled = false;
+            RemoveEnabled = false;
+            ReadOnly = false;
         }
     );
 
@@ -189,11 +189,11 @@ public class MainVm : INotifyPropertyChanged
     /// </summary>
     public RelayCommand ApplyCommand => _applyCommand ??= new RelayCommand(() =>
         {
-            IsReadOnly = true;
-            IsAddEnabled = true;
+            ReadOnly = true;
+            AddEnabled = true;
             ApplyVisibility = Hidden;
 
-            if (IsEditing) return;
+            if (Editing) return;
             Contacts.Add(SelectedContact);
         }
     );
@@ -204,11 +204,11 @@ public class MainVm : INotifyPropertyChanged
     public RelayCommand EditCommand => _editCommand ??= new RelayCommand(() =>
         {
             ApplyVisibility = Visible;
-            IsAddEnabled = false;
-            IsEditEnabled = false;
-            IsRemoveEnabled = false;
-            IsReadOnly = false;
-            IsEditing = true;
+            AddEnabled = false;
+            EditEnabled = false;
+            RemoveEnabled = false;
+            ReadOnly = false;
+            Editing = true;
         }
     );
 
@@ -220,8 +220,8 @@ public class MainVm : INotifyPropertyChanged
             Contacts.Remove(SelectedContact);
             SelectedContact = new Contact();
             if (Contacts.Count != 0) return;
-            IsEditEnabled = false;
-            IsRemoveEnabled = false;
+            EditEnabled = false;
+            RemoveEnabled = false;
         }
     );
 

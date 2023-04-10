@@ -20,7 +20,7 @@ public static class ContactFactory
     /// Генерирует случайный контакт. Через API сервиса randomdatatools.ru.
     /// </summary>
     /// <returns>Случайный контакт.</returns>
-    public static Contact? RandomGenerate()
+    public static Contact? RandomContact()
     {
         try
         {
