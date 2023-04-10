@@ -13,7 +13,7 @@ namespace Contacts.ViewModel;
 /// <summary>
 /// Определяет модель представления главного окна.
 /// </summary>
-public class MainVm : INotifyPropertyChanged
+public sealed class MainVm : INotifyPropertyChanged
 {
     /// <summary>
     /// Хранит выбранный контакт.
@@ -84,13 +84,20 @@ public class MainVm : INotifyPropertyChanged
         Contacts = contacts;
     }
 
+    /// <summary>
+    /// Конструктор по умолчанию.
+    /// </summary>
+    public MainVm()
+    {
+    }
+
     /// <inheritdoc/>
     public event PropertyChangedEventHandler? PropertyChanged;
 
     /// <summary>
     /// Возвращает коллекцию контактов.
     /// </summary>
-    public ObservableCollection<Contact> Contacts { get; }
+    public ObservableCollection<Contact> Contacts { get; } = null!;
 
     /// <summary>
     /// Устанавливает и возвращает значение, указывающее, что кнопка применения изменений доступна.
@@ -232,7 +239,7 @@ public class MainVm : INotifyPropertyChanged
         Serializer<ObservableCollection<Contact>>.ToJson(Contacts, App.DefaultSavePath));
 
     /// <inheritdoc cref="INotifyPropertyChanged.PropertyChanged"/>
-    protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+    private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
