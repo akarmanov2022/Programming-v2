@@ -4,13 +4,15 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-        xmlns:local="clr-namespace:Contacts"
         xmlns:viewModel="clr-namespace:Contacts.ViewModel"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance viewModel:MainVm}"
         Title="Contacts"
         Height="550"
         Width="800">
+    <Window.Resources>
+        <viewModel:StringToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </Window.Resources>
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closing">
             <i:InvokeCommandAction Command="{Binding CloseWindowCommand}" />
@@ -112,20 +114,25 @@
                         <StackPanel Grid.Column="1"
                                     Grid.Row="0">
                             <TextBlock Text="Name:" />
-                            <TextBox Name="TbName" IsReadOnly="{Binding .ReadOnly}"
-                                     Text="{Binding SelectedContact.LastName, UpdateSourceTrigger=Explicit}" />
+                            <TextBox Name="TbName"
+                                     IsReadOnly="{Binding .ReadOnly}"
+                                     Text="{Binding SelectedContact.LastName, 
+                                     UpdateSourceTrigger=Explicit}" />
                             <TextBlock Text="Phone Number:" />
                             <TextBox Name="TbPhone"
-                                Text="{Binding SelectedContact.Phone, UpdateSourceTrigger=Explicit}"
-                                IsReadOnly="{Binding .ReadOnly}" />
+                                     Text="{Binding SelectedContact.Phone, 
+                                     UpdateSourceTrigger=Explicit}"
+                                     IsReadOnly="{Binding .ReadOnly}" />
                             <TextBlock Text="Email:" />
                             <TextBox Name="TbEmail"
-                                Text="{Binding SelectedContact.Email, UpdateSourceTrigger=Explicit}"
-                                IsReadOnly="{Binding .ReadOnly}" />
+                                     Text="{Binding SelectedContact.Email, 
+                                     UpdateSourceTrigger=Explicit}"
+                                     IsReadOnly="{Binding .ReadOnly}" />
                         </StackPanel>
                         <Button Grid.Row="1"
                                 Grid.Column="0"
-                                Visibility="{Binding .ApplyVisibility}"
+                                Visibility="{Binding .ApplyVisibility, 
+                                Converter={StaticResource BooleanToVisibilityConverter}}"
                                 Click="ApplyButton_OnClick"
                                 Command="{Binding .ApplyCommand}"
                                 CommandParameter="{Binding .SelectedContact}"

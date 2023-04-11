@@ -2,11 +2,9 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Windows;
 using CommunityToolkit.Mvvm.Input;
 using Contacts.Model;
 using Contacts.Services;
-using static System.Windows.Visibility;
 
 namespace Contacts.ViewModel;
 
@@ -43,7 +41,7 @@ public sealed class MainVm : INotifyPropertyChanged
     /// <summary>
     /// Хранит значение, указывающее, что кнопка применения изменений доступна.
     /// </summary>
-    private Visibility _applyVisibility = Hidden;
+    private string _applyVisibility = "Hidden";
 
     /// <summary>
     /// Хранит команду генерации случайного контакта.
@@ -102,7 +100,7 @@ public sealed class MainVm : INotifyPropertyChanged
     /// <summary>
     /// Устанавливает и возвращает значение, указывающее, что кнопка применения изменений доступна.
     /// </summary>
-    public Visibility ApplyVisibility
+    public string ApplyVisibility
     {
         get => _applyVisibility;
         private set => SetField(ref _applyVisibility, value);
@@ -158,7 +156,7 @@ public sealed class MainVm : INotifyPropertyChanged
         set
         {
             SetField(ref _selectedContact, value);
-            ApplyVisibility = Hidden;
+            ApplyVisibility = "Hidden";
             ReadOnly = true;
             AddEnabled = true;
             RemoveEnabled = true;
@@ -183,7 +181,7 @@ public sealed class MainVm : INotifyPropertyChanged
     public RelayCommand AddCommand => _addCommand ??= new RelayCommand(() =>
         {
             SelectedContact = new Contact();
-            ApplyVisibility = Visible;
+            ApplyVisibility = "Visible";
             AddEnabled = false;
             EditEnabled = false;
             RemoveEnabled = false;
@@ -198,7 +196,7 @@ public sealed class MainVm : INotifyPropertyChanged
         {
             ReadOnly = true;
             AddEnabled = true;
-            ApplyVisibility = Hidden;
+            ApplyVisibility = "Hidden";
 
             if (Editing) return;
             Contacts.Add(SelectedContact);
@@ -210,7 +208,7 @@ public sealed class MainVm : INotifyPropertyChanged
     /// </summary>
     public RelayCommand EditCommand => _editCommand ??= new RelayCommand(() =>
         {
-            ApplyVisibility = Visible;
+            ApplyVisibility = "Visible";
             AddEnabled = false;
             EditEnabled = false;
             RemoveEnabled = false;
