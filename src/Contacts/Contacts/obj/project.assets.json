@@ -145,19 +145,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\arsen\\.nuget\\packages\\": {}
+    "C:\\Users\\STX\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Workspace\\TUSUR\\OOP\\Programming-v2\\src\\Contacts\\Contacts\\Contacts.csproj",
+      "projectUniqueName": "C:\\Users\\STX\\RiderProjects\\Programming-v2\\src\\Contacts\\Contacts\\Contacts.csproj",
       "projectName": "Contacts",
-      "projectPath": "D:\\Workspace\\TUSUR\\OOP\\Programming-v2\\src\\Contacts\\Contacts\\Contacts.csproj",
-      "packagesPath": "C:\\Users\\arsen\\.nuget\\packages\\",
-      "outputPath": "D:\\Workspace\\TUSUR\\OOP\\Programming-v2\\src\\Contacts\\Contacts\\obj\\",
+      "projectPath": "C:\\Users\\STX\\RiderProjects\\Programming-v2\\src\\Contacts\\Contacts\\Contacts.csproj",
+      "packagesPath": "C:\\Users\\STX\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\STX\\RiderProjects\\Programming-v2\\src\\Contacts\\Contacts\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\arsen\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\STX\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net7.0-windows"
@@ -213,7 +213,7 @@
             "privateAssets": "none"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.200\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Users\\STX\\.dotnet\\sdk\\7.0.202\\RuntimeIdentifierGraph.json"
       }
     }
   }

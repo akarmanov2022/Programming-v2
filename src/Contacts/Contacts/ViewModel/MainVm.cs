@@ -186,6 +186,7 @@ public sealed class MainVm : INotifyPropertyChanged
             EditEnabled = false;
             RemoveEnabled = false;
             ReadOnly = false;
+            Editing = false;
         }
     );
 
