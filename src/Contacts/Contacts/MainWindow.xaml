@@ -5,13 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:viewModel="clr-namespace:Contacts.ViewModel"
+        xmlns:view="clr-namespace:Contacts.View"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance viewModel:MainVm}"
         Title="Contacts"
         Height="550"
         Width="800">
     <Window.Resources>
-        <viewModel:StringToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <view:BoolToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </Window.Resources>
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closing">
@@ -63,7 +64,7 @@
                     <ListBox Grid.Row="1"
                              Margin="3"
                              DisplayMemberPath="LastName"
-                             SelectedItem="{Binding .SelectedContact}"
+                             SelectedItem="{Binding .SelectedContact, UpdateSourceTrigger=PropertyChanged}"
                              ItemsSource="{Binding .Contacts}" />
                     <Grid Grid.Row="2">
                         <Grid.ColumnDefinitions>
@@ -73,16 +74,15 @@
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
                         <Button Grid.Column="0"
-                                IsEnabled="{Binding .AddEnabled}"
                                 Command="{Binding .AddCommand}"
                                 Content="Add" />
                         <Button Grid.Column="1"
-                                IsEnabled="{Binding .EditEnabled}"
                                 Command="{Binding .EditCommand}"
+                                IsEnabled="{Binding .Selecting}"
                                 Content="Edit" />
                         <Button Grid.Column="2"
-                                IsEnabled="{Binding .RemoveEnabled}"
                                 Command="{Binding .RemoveCommand}"
+                                IsEnabled="{Binding .Selecting}"
                                 Content="Remove" />
                         <Button Grid.Column="3"
                                 Content="Generate"
@@ -130,7 +130,7 @@
                                      IsReadOnly="{Binding .ReadOnly}" />
                         </StackPanel>
                         <Button Grid.Row="1"
-                                Grid.Column="0"
+                                Grid.Column="1"
                                 Visibility="{Binding .ApplyVisibility, 
                                 Converter={StaticResource BooleanToVisibilityConverter}}"
                                 Click="ApplyButton_OnClick"

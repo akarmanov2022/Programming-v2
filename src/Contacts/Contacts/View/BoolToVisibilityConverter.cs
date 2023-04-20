@@ -3,22 +3,22 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
-namespace Contacts.ViewModel;
+namespace Contacts.View;
 
 /// <summary>
 /// Конвертирует значение <see cref="string"/> в <see cref="Visibility"/>.
 /// </summary>
-public class StringToVisibilityConverter : IValueConverter
+public class BoolToVisibilityConverter : IValueConverter
 {
     /// <inheritdoc/>
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        return Enum.Parse(typeof(Visibility), value.ToString() ?? string.Empty);
+        return bool.Parse(value.ToString() ?? bool.FalseString) ? Visibility.Visible : Visibility.Hidden;
     }
 
     /// <inheritdoc/>
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        return ((Visibility)value).ToString();
+        return Visibility.Visible.Equals(value);
     }
 }

@@ -16,7 +16,7 @@ public sealed class MainVm : INotifyPropertyChanged
     /// <summary>
     /// Хранит выбранный контакт.
     /// </summary>
-    private Contact _selectedContact = new();
+    private Contact? _selectedContact;
 
     /// <summary>
     /// Хранит значение, указывающее, что поля доступны только для чтения.
@@ -24,24 +24,14 @@ public sealed class MainVm : INotifyPropertyChanged
     private bool _readOnly = true;
 
     /// <summary>
-    /// Хранит значение, указывающее, что кнопка добавления доступна.
-    /// </summary>
-    private bool _addEnabled = true;
-
-    /// <summary>
-    /// Хранит значение, указывающее, что кнопка редактирования доступна.
-    /// </summary>
-    private bool _editEnabled;
-
-    /// <summary>
-    /// Хранит значение, указывающее, что кнопка удаления доступна.
-    /// </summary>
-    private bool _removeEnabled;
-
-    /// <summary>
     /// Хранит значение, указывающее, что кнопка применения изменений доступна.
     /// </summary>
-    private string _applyVisibility = "Hidden";
+    private bool _applyVisibility;
+
+    /// <summary>
+    /// Хранит значение, указывающее, что выбран контакт из списка.
+    /// </summary>
+    private bool _selecting;
 
     /// <summary>
     /// Хранит команду генерации случайного контакта.
@@ -77,7 +67,7 @@ public sealed class MainVm : INotifyPropertyChanged
     /// Инициализирует новый экземпляр класса <see cref="MainVm"/>.
     /// </summary>
     /// <param name="contacts">Коллекция контактов.</param>
-    public MainVm(ObservableCollection<Contact> contacts)
+    public MainVm(ObservableCollection<Contact?> contacts)
     {
         Contacts = contacts;
     }
@@ -95,12 +85,21 @@ public sealed class MainVm : INotifyPropertyChanged
     /// <summary>
     /// Возвращает коллекцию контактов.
     /// </summary>
-    public ObservableCollection<Contact> Contacts { get; } = null!;
+    public ObservableCollection<Contact?> Contacts { get; } = null!;
+
+    /// <summary>
+    /// Устанавливает и возвращает значение, указывающее, что выбран контакт.
+    /// </summary>
+    public bool Selecting
+    {
+        get => _selecting;
+        set => SetField(ref _selecting, value);
+    }
 
     /// <summary>
     /// Устанавливает и возвращает значение, указывающее, что кнопка применения изменений доступна.
     /// </summary>
-    public string ApplyVisibility
+    public bool ApplyVisibility
     {
         get => _applyVisibility;
         private set => SetField(ref _applyVisibility, value);
@@ -114,15 +113,6 @@ public sealed class MainVm : INotifyPropertyChanged
     /// <summary>
     /// Устанавливает и возвращает значение, указывающее, что поля доступны только для чтения.
     /// </summary>
-    public bool AddEnabled
-    {
-        get => _addEnabled;
-        private set => SetField(ref _addEnabled, value);
-    }
-
-    /// <summary>
-    /// Устанавливает и возвращает значение, указывающее, что поля доступны только для чтения.
-    /// </summary>
     public bool ReadOnly
     {
         get => _readOnly;
@@ -130,37 +120,17 @@ public sealed class MainVm : INotifyPropertyChanged
     }
 
     /// <summary>
-    /// Устанавливает и возвращает значение, указывающее, что кнопка редактирования доступна.
-    /// </summary>
-    public bool EditEnabled
-    {
-        get => _editEnabled;
-        private set => SetField(ref _editEnabled, value);
-    }
-
-    /// <summary>
-    /// Устанавливает и возвращает значение, указывающее, что кнопка удаления доступна.
-    /// </summary>
-    public bool RemoveEnabled
-    {
-        get => _removeEnabled;
-        private set => SetField(ref _removeEnabled, value);
-    }
-
-    /// <summary>
     /// Устанавливает и возвращает значение выбранного контакта.
     /// </summary>
-    public Contact SelectedContact
+    public Contact? SelectedContact
     {
         get => _selectedContact;
         set
         {
             SetField(ref _selectedContact, value);
-            ApplyVisibility = "Hidden";
+            ApplyVisibility = false;
             ReadOnly = true;
-            AddEnabled = true;
-            RemoveEnabled = true;
-            EditEnabled = true;
+            Selecting = true;
         }
     }
 
@@ -181,12 +151,10 @@ public sealed class MainVm : INotifyPropertyChanged
     public RelayCommand AddCommand => _addCommand ??= new RelayCommand(() =>
         {
             SelectedContact = new Contact();
-            ApplyVisibility = "Visible";
-            AddEnabled = false;
-            EditEnabled = false;
-            RemoveEnabled = false;
+            ApplyVisibility = true;
             ReadOnly = false;
             Editing = false;
+            Selecting = false;
         }
     );
 
@@ -196,8 +164,8 @@ public sealed class MainVm : INotifyPropertyChanged
     public RelayCommand ApplyCommand => _applyCommand ??= new RelayCommand(() =>
         {
             ReadOnly = true;
-            AddEnabled = true;
-            ApplyVisibility = "Hidden";
+            ApplyVisibility = false;
+            Selecting = true;
 
             if (Editing) return;
             Contacts.Add(SelectedContact);
@@ -209,12 +177,10 @@ public sealed class MainVm : INotifyPropertyChanged
     /// </summary>
     public RelayCommand EditCommand => _editCommand ??= new RelayCommand(() =>
         {
-            ApplyVisibility = "Visible";
-            AddEnabled = false;
-            EditEnabled = false;
-            RemoveEnabled = false;
+            ApplyVisibility = true;
             ReadOnly = false;
             Editing = true;
+            Selecting = false;
         }
     );
 
@@ -223,11 +189,17 @@ public sealed class MainVm : INotifyPropertyChanged
     /// </summary>
     public RelayCommand RemoveCommand => _removeCommand ??= new RelayCommand(() =>
         {
+            var indexOf = Contacts.IndexOf(SelectedContact);
             Contacts.Remove(SelectedContact);
-            SelectedContact = new Contact();
-            if (Contacts.Count != 0) return;
-            EditEnabled = false;
-            RemoveEnabled = false;
+            Selecting = indexOf < Contacts.Count;
+            if (indexOf < Contacts.Count)
+            {
+                SelectedContact = Contacts[indexOf];
+            }
+            else
+            {
+                Selecting = false;
+            }
         }
     );
 

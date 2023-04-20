@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.IO;
+using System.Windows;
+using Contacts.Model;
 using Newtonsoft.Json;
 
 namespace Contacts.Services;
@@ -16,7 +19,7 @@ public static class Serializer<T> where T : class
     /// </summary>
     /// <param name="o">Объект.</param>
     /// <param name="filePath">Путь к файлу.</param>
-    public static void ToJson(T o, string filePath)
+    public static void ToJson(ObservableCollection<Contact?> o, string filePath)
     {
         try
         {
@@ -26,7 +29,7 @@ public static class Serializer<T> where T : class
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            MessageBox.Show(e.Message);
         }
     }
 
@@ -45,7 +48,7 @@ public static class Serializer<T> where T : class
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            MessageBox.Show(e.Message);
             return null;
         }
     }
