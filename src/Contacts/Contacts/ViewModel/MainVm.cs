@@ -67,7 +67,7 @@ public sealed class MainVm : INotifyPropertyChanged
     /// Инициализирует новый экземпляр класса <see cref="MainVm"/>.
     /// </summary>
     /// <param name="contacts">Коллекция контактов.</param>
-    public MainVm(ObservableCollection<Contact?> contacts)
+    public MainVm(ObservableCollection<Contact> contacts)
     {
         Contacts = contacts;
     }
@@ -85,7 +85,7 @@ public sealed class MainVm : INotifyPropertyChanged
     /// <summary>
     /// Возвращает коллекцию контактов.
     /// </summary>
-    public ObservableCollection<Contact?> Contacts { get; } = null!;
+    public ObservableCollection<Contact> Contacts { get; } = null!;
 
     /// <summary>
     /// Устанавливает и возвращает значение, указывающее, что выбран контакт.
@@ -168,7 +168,7 @@ public sealed class MainVm : INotifyPropertyChanged
             Selecting = true;
 
             if (Editing) return;
-            Contacts.Add(SelectedContact);
+            if (SelectedContact != null) Contacts.Add(SelectedContact);
         }
     );
 
@@ -189,6 +189,7 @@ public sealed class MainVm : INotifyPropertyChanged
     /// </summary>
     public RelayCommand RemoveCommand => _removeCommand ??= new RelayCommand(() =>
         {
+            if (SelectedContact == null) return;
             var indexOf = Contacts.IndexOf(SelectedContact);
             Contacts.Remove(SelectedContact);
             Selecting = indexOf < Contacts.Count;

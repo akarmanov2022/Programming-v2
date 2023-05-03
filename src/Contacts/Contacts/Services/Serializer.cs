@@ -19,7 +19,7 @@ public static class Serializer<T> where T : class
     /// </summary>
     /// <param name="o">Объект.</param>
     /// <param name="filePath">Путь к файлу.</param>
-    public static void ToJson(ObservableCollection<Contact?> o, string filePath)
+    public static void ToJson(ObservableCollection<Contact> o, string filePath)
     {
         try
         {

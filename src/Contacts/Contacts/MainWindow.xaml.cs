@@ -16,9 +16,9 @@ namespace Contacts
         {
             InitializeComponent();
             
-            ObservableCollection<Contact?> contacts =
+            var contacts =
                 Serializer<ObservableCollection<Contact>>.FromJson(App.DefaultSavePath)
-                ?? new ObservableCollection<Contact?>();
+                ?? new ObservableCollection<Contact>();
             DataContext = new MainVm(contacts);
         }
 
