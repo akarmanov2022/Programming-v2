@@ -75,6 +75,7 @@
                         </Grid.ColumnDefinitions>
                         <Button Grid.Column="0"
                                 Command="{Binding .AddCommand}"
+                                IsEnabled="{Binding .ReadOnly}"
                                 Content="Add" />
                         <Button Grid.Column="1"
                                 Command="{Binding .EditCommand}"
