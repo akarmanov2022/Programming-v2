@@ -13,7 +13,6 @@ namespace Contacts.Services;
 /// <typeparam name="T">Тип объекта.</typeparam>
 public static class Serializer<T> where T : class
 {
-
     /// <summary>
     /// Сериализует объект в JSON.
     /// </summary>
@@ -29,7 +28,9 @@ public static class Serializer<T> where T : class
         }
         catch (Exception e)
         {
-            MessageBox.Show(e.Message);
+            MessageBox.Show(
+                $"Error: {e.Message}", "Error",
+                MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 
@@ -48,7 +49,9 @@ public static class Serializer<T> where T : class
         }
         catch (Exception e)
         {
-            MessageBox.Show(e.Message);
+            MessageBox.Show(
+                $"Error: {e.Message}", "Error",
+                MessageBoxButton.OK, MessageBoxImage.Error);
             return null;
         }
     }
