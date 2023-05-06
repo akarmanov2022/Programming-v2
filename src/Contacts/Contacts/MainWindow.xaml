@@ -1,0 +1,146 @@
+﻿<Window x:Class="Contacts.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:viewModel="clr-namespace:Contacts.ViewModel"
+        xmlns:view="clr-namespace:Contacts.View"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance viewModel:MainVm}"
+        Title="Contacts"
+        Height="550"
+        Width="800">
+    <Window.Resources>
+        <view:BoolToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </Window.Resources>
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Closing">
+            <i:InvokeCommandAction Command="{Binding CloseWindowCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <Grid>
+        <Grid.Resources>
+            <Style TargetType="Border">
+                <Setter Property="Padding"
+                        Value="8" />
+            </Style>
+            <Style TargetType="Button">
+                <Setter Property="Margin"
+                        Value="3" />
+            </Style>
+            <Style TargetType="TextBlock">
+                <Setter Property="Margin"
+                        Value="3" />
+            </Style>
+            <Style TargetType="TextBox">
+                <Setter Property="Margin"
+                        Value="3" />
+            </Style>
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid Background="#f8f8f8"
+              MinWidth="250">
+            <Border>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0"
+                                   Text="Find:" />
+                        <TextBox Grid.Column="1" />
+                    </Grid>
+                    <ListBox Grid.Row="1"
+                             Margin="3"
+                             DisplayMemberPath="LastName"
+                             SelectedItem="{Binding .SelectedContact, UpdateSourceTrigger=PropertyChanged}"
+                             ItemsSource="{Binding .Contacts}" />
+                    <Grid Grid.Row="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0"
+                                Command="{Binding .AddCommand}"
+                                IsEnabled="{Binding .ReadOnly}"
+                                Content="Add" />
+                        <Button Grid.Column="1"
+                                Command="{Binding .EditCommand}"
+                                IsEnabled="{Binding .Selecting}"
+                                Content="Edit" />
+                        <Button Grid.Column="2"
+                                Command="{Binding .RemoveCommand}"
+                                IsEnabled="{Binding .Selecting}"
+                                Content="Remove" />
+                        <Button Grid.Column="3"
+                                Content="Generate"
+                                Command="{Binding .GenerateCommand}" />
+                    </Grid>
+                </Grid>
+            </Border>
+        </Grid>
+        <GridSplitter Grid.Column="1"
+                      ShowsPreview="False"
+                      Width="3"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Stretch" />
+        <Grid Grid.Column="2">
+            <Border>
+                <StackPanel Orientation="Vertical">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Image Grid.Column="0"
+                               Grid.Row="0"
+                               Source="Resources/Img/photo_placeholder_100x100.png" />
+                        <StackPanel Grid.Column="1"
+                                    Grid.Row="0">
+                            <TextBlock Text="Name:" />
+                            <TextBox Name="TbName"
+                                     IsReadOnly="{Binding .ReadOnly}"
+                                     Text="{Binding SelectedContact.LastName, 
+                                     UpdateSourceTrigger=Explicit}" />
+                            <TextBlock Text="Phone Number:" />
+                            <TextBox Name="TbPhone"
+                                     Text="{Binding SelectedContact.Phone, 
+                                     UpdateSourceTrigger=Explicit}"
+                                     IsReadOnly="{Binding .ReadOnly}" />
+                            <TextBlock Text="Email:" />
+                            <TextBox Name="TbEmail"
+                                     Text="{Binding SelectedContact.Email, 
+                                     UpdateSourceTrigger=Explicit}"
+                                     IsReadOnly="{Binding .ReadOnly}" />
+                        </StackPanel>
+                        <Button Grid.Row="1"
+                                Grid.Column="1"
+                                Visibility="{Binding .ApplyVisibility, 
+                                Converter={StaticResource BooleanToVisibilityConverter}}"
+                                Click="ApplyButton_OnClick"
+                                Command="{Binding .ApplyCommand}"
+                                CommandParameter="{Binding .SelectedContact}"
+                                Content="Apply" />
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>
