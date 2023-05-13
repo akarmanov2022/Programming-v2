@@ -22,12 +22,7 @@ public sealed class MainVm : INotifyPropertyChanged
     /// Хранит значение, указывающее, что поля доступны только для чтения.
     /// </summary>
     private bool _readOnly = true;
-
-    /// <summary>
-    /// Хранит значение, указывающее, что кнопка применения изменений доступна.
-    /// </summary>
-    private bool _applyVisibility;
-
+    
     /// <summary>
     /// Хранит значение, указывающее, что выбран контакт из списка.
     /// </summary>
@@ -88,6 +83,11 @@ public sealed class MainVm : INotifyPropertyChanged
     public ObservableCollection<Contact> Contacts { get; } = null!;
 
     /// <summary>
+    /// Устанавливает и возвращает значение, указывающее, что происходит редактирование контакта.
+    /// </summary>
+    private bool Editing { get; set; }
+
+    /// <summary>
     /// Устанавливает и возвращает значение, указывающее, что выбран контакт.
     /// </summary>
     public bool Selecting
@@ -95,20 +95,6 @@ public sealed class MainVm : INotifyPropertyChanged
         get => _selecting;
         set => SetField(ref _selecting, value);
     }
-
-    /// <summary>
-    /// Устанавливает и возвращает значение, указывающее, что кнопка применения изменений доступна.
-    /// </summary>
-    public bool ApplyVisibility
-    {
-        get => _applyVisibility;
-        private set => SetField(ref _applyVisibility, value);
-    }
-
-    /// <summary>
-    /// Устанавливает и возвращает значение, указывающее, что происходит редактирование контакта.
-    /// </summary>
-    private bool Editing { get; set; }
 
     /// <summary>
     /// Устанавливает и возвращает значение, указывающее, что поля доступны только для чтения.
@@ -128,7 +114,6 @@ public sealed class MainVm : INotifyPropertyChanged
         set
         {
             SetField(ref _selectedContact, value);
-            ApplyVisibility = false;
             ReadOnly = true;
             Selecting = true;
         }
@@ -151,7 +136,6 @@ public sealed class MainVm : INotifyPropertyChanged
     public RelayCommand AddCommand => _addCommand ??= new RelayCommand(() =>
         {
             SelectedContact = new Contact();
-            ApplyVisibility = true;
             ReadOnly = false;
             Editing = false;
             Selecting = false;
@@ -164,11 +148,12 @@ public sealed class MainVm : INotifyPropertyChanged
     public RelayCommand ApplyCommand => _applyCommand ??= new RelayCommand(() =>
         {
             ReadOnly = true;
-            ApplyVisibility = false;
             Selecting = true;
 
-            if (Editing) return;
-            if (SelectedContact != null) Contacts.Add(SelectedContact);
+            if (SelectedContact != null && !Editing)
+            {
+                Contacts.Add(SelectedContact);
+            }
         }
     );
 
@@ -177,7 +162,6 @@ public sealed class MainVm : INotifyPropertyChanged
     /// </summary>
     public RelayCommand EditCommand => _editCommand ??= new RelayCommand(() =>
         {
-            ApplyVisibility = true;
             ReadOnly = false;
             Editing = true;
             Selecting = false;
