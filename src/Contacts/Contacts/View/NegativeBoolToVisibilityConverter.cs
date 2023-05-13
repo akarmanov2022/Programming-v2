@@ -6,19 +6,19 @@ using System.Windows.Data;
 namespace Contacts.View;
 
 /// <summary>
-/// Конвертирует значение <see cref="string"/> в <see cref="Visibility"/>.
+/// Конвертирует значение <see cref="bool"/> в <see cref="Visibility"/>.
 /// </summary>
-public class BoolToVisibilityConverter : IValueConverter
+public class NegativeBoolToVisibilityConverter : IValueConverter
 {
     /// <inheritdoc/>
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        return bool.Parse(value.ToString() ?? bool.FalseString) ? Visibility.Visible : Visibility.Hidden;
+        return !bool.Parse(value.ToString() ?? bool.FalseString) ? Visibility.Visible : Visibility.Hidden;
     }
 
     /// <inheritdoc/>
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        return Visibility.Visible.Equals(value);
+        return !Visibility.Visible.Equals(value);
     }
 }
