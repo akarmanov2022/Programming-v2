@@ -28,7 +28,7 @@ public sealed class MainViewModel : ObservableObject
 
     private Contact? _copyContact;
 
-    private ContactViewModel? _contactViewModel;
+    private ContactViewModel _contactViewModel = new();
 
     /// <summary>
     /// Инициализирует новый экземпляр класса <see cref="MainViewModel"/>.
@@ -87,7 +87,7 @@ public sealed class MainViewModel : ObservableObject
         }
     }
 
-    public ContactViewModel? ContactViewModel
+    public ContactViewModel ContactViewModel
     {
         get => _contactViewModel;
         private set => SetProperty(ref _contactViewModel, value);
@@ -136,14 +136,14 @@ public sealed class MainViewModel : ObservableObject
         else
         {
             Selecting = false;
-            ContactViewModel = null;
+            ContactViewModel = new ContactViewModel();
         }
     }
 
     private void EditCommandExecute()
     {
         _copyContact = SelectedContact?.Clone() as Contact;
-        if (ContactViewModel != null) ContactViewModel.ReadOnly = false;
+        ContactViewModel.ReadOnly = false;
         ReadOnly = false;
         Selecting = false;
     }
@@ -156,7 +156,7 @@ public sealed class MainViewModel : ObservableObject
 
     private void ApplyCommandExecute()
     {
-        if (ContactViewModel != null) ContactViewModel.ReadOnly = true;
+        ContactViewModel.ReadOnly = true;
         ReadOnly = true;
         Selecting = true;
 
@@ -174,7 +174,7 @@ public sealed class MainViewModel : ObservableObject
     private void AddCommandExecute()
     {
         SelectedContact = new Contact();
-        if (ContactViewModel != null) ContactViewModel.ReadOnly = false;
+        ContactViewModel.ReadOnly = false;
         ReadOnly = false;
         Selecting = false;
     }

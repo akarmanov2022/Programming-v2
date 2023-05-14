@@ -20,17 +20,17 @@ public sealed class Contact : INotifyPropertyChanged, ICloneable
     /// <summary>
     /// Хранит фамилию.
     /// </summary>
-    private string _lastName = "";
+    private string? _lastName = "";
 
     /// <summary>
     /// Хранит адрес электронной почты.
     /// </summary>
-    private string _email = "";
+    private string? _email = "";
 
     /// <summary>
     /// Хранит номер телефона.
     /// </summary>
-    private string _phone = "";
+    private string? _phone = "";
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -47,7 +47,7 @@ public sealed class Contact : INotifyPropertyChanged, ICloneable
     /// <summary>
     /// Устанавливает и возвращает фамилию.
     /// </summary>
-    public string LastName
+    public string? LastName
     {
         get => _lastName;
         set => SetField(ref _lastName, value);
@@ -56,7 +56,7 @@ public sealed class Contact : INotifyPropertyChanged, ICloneable
     /// <summary>
     /// Устонавливает и возвращает адрес электронной почты.
     /// </summary>
-    public string Email
+    public string? Email
     {
         get => _email;
         set => SetField(ref _email, value);
@@ -65,7 +65,7 @@ public sealed class Contact : INotifyPropertyChanged, ICloneable
     /// <summary>
     /// Устанавливает и возвращает номер телефона.
     /// </summary>
-    public string Phone
+    public string? Phone
     {
         get => _phone;
         set => SetField(ref _phone, value);

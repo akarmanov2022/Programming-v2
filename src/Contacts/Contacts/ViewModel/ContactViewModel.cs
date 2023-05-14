@@ -6,24 +6,31 @@ namespace Contacts.ViewModel;
 
 public class ContactViewModel : ObservableValidator
 {
-    private readonly Contact _contact;
+    private readonly Contact? _contact;
 
     private bool _readOnly = true;
 
 
-    public ContactViewModel(Contact contact)
+    /// <inheritdoc />
+    public ContactViewModel(Contact? contact)
     {
         _contact = contact;
         ValidateAllProperties();
     }
 
+    public ContactViewModel()
+    {
+        _contact = null;
+    }
+
     [MaxLength(100)]
     [Required(AllowEmptyStrings = false)]
-    public string Name
+    public string? Name
     {
-        get => _contact.LastName;
+        get => _contact?.LastName;
         set
         {
+            if (_contact == null) return;
             _contact.LastName = value;
             ValidateProperty(value);
             OnPropertyChanged();
@@ -33,11 +40,12 @@ public class ContactViewModel : ObservableValidator
     [MaxLength(100)]
     [Required(AllowEmptyStrings = false)]
     [Phone(ErrorMessage = "Phone Number can contains only digits and symbols '+()- '. Example: +7 (999) 111-22-33")]
-    public string PhoneNumber
+    public string? PhoneNumber
     {
-        get => _contact.Phone;
+        get => _contact?.Phone;
         set
         {
+            if (_contact == null) return;
             _contact.Phone = value;
             ValidateProperty(value);
             OnPropertyChanged();
@@ -47,11 +55,12 @@ public class ContactViewModel : ObservableValidator
     [EmailAddress]
     [MaxLength(100)]
     [Required(AllowEmptyStrings = false)]
-    public string Email
+    public string? Email
     {
-        get => _contact.Email;
+        get => _contact?.Email;
         set
         {
+            if (_contact == null) return;
             _contact.Email = value;
             ValidateProperty(value);
             OnPropertyChanged();
