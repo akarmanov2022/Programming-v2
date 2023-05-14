@@ -1,8 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows;
 using Contacts.Model;
-using Contacts.Services;
-using Contacts.ViewModel;
+using Model.Services;
+using ViewModel.ViewModel;
 
 namespace Contacts
 {

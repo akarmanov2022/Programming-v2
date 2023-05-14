@@ -6,6 +6,7 @@
         <Nullable>enable</Nullable>
         <UseWPF>true</UseWPF>
         <ApplicationIcon>Resources\Img\ContactsApp_96x96.ico</ApplicationIcon>
+        <RootNamespace>Contacts</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -69,6 +70,11 @@
       <Resource Include="Resources\Img\remove_contact_32x32_gray.png">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Resource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Model\Model.csproj" />
+      <ProjectReference Include="..\ViewModel\ViewModel.csproj" />
     </ItemGroup>
 
 </Project>
