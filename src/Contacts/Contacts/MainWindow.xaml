@@ -6,6 +6,7 @@
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:viewModel="clr-namespace:Contacts.ViewModel"
         xmlns:view="clr-namespace:Contacts.View"
+        xmlns:model="clr-namespace:Contacts.Model"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance viewModel:MainVm}"
         Title="Contacts"
@@ -13,6 +14,20 @@
         Width="800">
     <Window.Resources>
         <view:NegativeBoolToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <DataTemplate x:Key="ContactTemplate"
+                      DataType="{x:Type model:Contact}">
+            <StackPanel Orientation="Horizontal">
+                <Image Width="32"
+                       Height="32"
+                       Source="Resources/Img/photo_placeholder_100x100.png" />
+                <StackPanel Orientation="Vertical"
+                            Margin="3">
+                    <TextBlock Text="{Binding LastName}"
+                               FontWeight="Bold" />
+                    <TextBlock Text="{Binding Phone}" />
+                </StackPanel>
+            </StackPanel>
+        </DataTemplate>
     </Window.Resources>
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closing">
@@ -63,9 +78,9 @@
                     </Grid>
                     <ListBox Grid.Row="1"
                              Margin="3"
-                             DisplayMemberPath="LastName"
                              SelectedItem="{Binding .SelectedContact, UpdateSourceTrigger=PropertyChanged}"
-                             ItemsSource="{Binding .Contacts}" />
+                             ItemsSource="{Binding .Contacts}"
+                             ItemTemplate="{StaticResource ContactTemplate}" />
                     <Grid Grid.Row="2">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
