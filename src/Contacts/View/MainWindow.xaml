@@ -7,9 +7,9 @@
         xmlns:view="clr-namespace:Contacts.View"
         xmlns:controls="clr-namespace:Contacts.Controls"
         xmlns:model1="clr-namespace:Contacts.Model;assembly=Model"
-        xmlns:viewModel1="clr-namespace:ViewModel.ViewModel;assembly=ViewModel"
+        xmlns:viewModel="clr-namespace:ViewModel.ViewModel;assembly=ViewModel"
         mc:Ignorable="d"
-        d:DataContext="{d:DesignInstance viewModel1:MainViewModel}"
+        d:DataContext="{d:DesignInstance viewModel:MainViewModel}"
         Title="Contacts"
         Height="550"
         Width="800">

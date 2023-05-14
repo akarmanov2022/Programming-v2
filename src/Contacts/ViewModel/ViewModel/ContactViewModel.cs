@@ -2,7 +2,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using Contacts.Model;
 
-namespace Contacts.ViewModel;
+namespace ViewModel.ViewModel;
 
 /// <summary>
 /// Модель представления контакта.

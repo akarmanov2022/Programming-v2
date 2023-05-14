@@ -2,7 +2,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Contacts.Model;
-using Contacts.ViewModel;
 using Model.Services;
 
 namespace ViewModel.ViewModel;
@@ -36,7 +35,7 @@ public sealed partial class MainViewModel : ObservableObject
     private Contact? _selectedContact;
 
     /// <summary>
-    /// Хранит экземпляр класса <see cref="Contacts.ViewModel.MainViewModel.ContactViewModel"/>.
+    /// Хранит экземпляр класса <see cref="ContactViewModel"/>.
     /// </summary>
     [ObservableProperty]
     private ContactViewModel _contactViewModel = new();

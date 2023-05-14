@@ -4,10 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-             xmlns:viewModel="clr-namespace:Contacts.ViewModel;assembly=ViewModel"
+             xmlns:viewModel1="clr-namespace:ViewModel.ViewModel;assembly=ViewModel"
              mc:Ignorable="d"
              d:DesignWidth="300"
-             d:DataContext="{d:DesignInstance viewModel:ContactViewModel}"
+             d:DataContext="{d:DesignInstance viewModel1:ContactViewModel}"
              Validation.ErrorTemplate="{x:Null}">
     <UserControl.Resources>
         <Style x:Key="TextBoxInError"

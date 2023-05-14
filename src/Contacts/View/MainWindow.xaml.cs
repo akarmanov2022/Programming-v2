@@ -2,6 +2,7 @@
 using System.Windows;
 using Contacts.Model;
 using Model.Services;
+using ViewModel;
 using ViewModel.ViewModel;
 
 namespace Contacts

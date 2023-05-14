@@ -7,11 +7,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.0" />
+      <ProjectReference Include="..\Model\Model.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Model\Model.csproj" />
+      <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.0" />
     </ItemGroup>
 
 </Project>
