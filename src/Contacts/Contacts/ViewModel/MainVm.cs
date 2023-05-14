@@ -83,11 +83,7 @@ public sealed class MainVm : INotifyPropertyChanged
     /// Возвращает коллекцию контактов.
     /// </summary>
     public ObservableCollection<Contact> Contacts { get; } = null!;
-
-    /// <summary>
-    /// Устанавливает и возвращает значение, указывающее, что происходит редактирование контакта.
-    /// </summary>
-    private bool Editing { get; set; }
+    
 
     /// <summary>
     /// Устанавливает и возвращает значение, указывающее, что выбран контакт.
@@ -123,6 +119,7 @@ public sealed class MainVm : INotifyPropertyChanged
                 Contacts[indexOf] = _copyContact;
                 _copyContact = null;
             }
+
             SetField(ref _selectedContact, value);
         }
     }
@@ -145,7 +142,6 @@ public sealed class MainVm : INotifyPropertyChanged
         {
             SelectedContact = new Contact();
             ReadOnly = false;
-            Editing = false;
             Selecting = false;
         }
     );
@@ -158,10 +154,13 @@ public sealed class MainVm : INotifyPropertyChanged
             ReadOnly = true;
             Selecting = true;
 
-            if (!Editing)
+            if (_copyContact != null)
             {
-                Contacts.Add(SelectedContact);
+                _copyContact = null;
+                return;
             }
+
+            Contacts.Add(SelectedContact);
         }
     );
 
@@ -172,7 +171,6 @@ public sealed class MainVm : INotifyPropertyChanged
         {
             _copyContact = SelectedContact.Clone() as Contact;
             ReadOnly = false;
-            Editing = true;
             Selecting = false;
         }
     );

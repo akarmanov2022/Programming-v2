@@ -7,6 +7,7 @@
         xmlns:viewModel="clr-namespace:Contacts.ViewModel"
         xmlns:view="clr-namespace:Contacts.View"
         xmlns:model="clr-namespace:Contacts.Model"
+        xmlns:controls="clr-namespace:Contacts.Controls"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance viewModel:MainVm}"
         Title="Contacts"
@@ -112,51 +113,15 @@
                       Width="3"
                       HorizontalAlignment="Center"
                       VerticalAlignment="Stretch" />
-        <Grid Grid.Column="2">
-            <Border>
-                <StackPanel Orientation="Vertical">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition />
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-                        <Image Grid.Column="0"
-                               Grid.Row="0"
-                               Source="Resources/Img/photo_placeholder_100x100.png" />
-                        <StackPanel Grid.Column="1"
-                                    Grid.Row="0">
-                            <TextBlock Text="Name:" />
-                            <TextBox Name="TbName"
-                                     IsReadOnly="{Binding .ReadOnly}"
-                                     Text="{Binding SelectedContact.LastName, UpdateSourceTrigger=PropertyChanged}" />
-                            <TextBlock Text="Phone Number:" />
-                            <TextBox Name="TbPhone"
-                                     Text="{Binding SelectedContact.Phone}"
-                                     IsReadOnly="{Binding .ReadOnly}" />
-                            <TextBlock Text="Email:" />
-                            <TextBox Name="TbEmail"
-                                     Text="{Binding SelectedContact.Email}"
-                                     IsReadOnly="{Binding .ReadOnly}" />
-                        </StackPanel>
-                        <StackPanel Grid.Column="1"
-                                    Grid.Row="1"
-                                    Orientation="Horizontal">
-                            <Button
-                                Visibility="{Binding .ReadOnly, 
+        <StackPanel Grid.Column="2">
+            <controls:ContactControl></controls:ContactControl>
+            <Button
+                Visibility="{Binding .ReadOnly, 
                                 Converter={StaticResource BooleanToVisibilityConverter}}"
-                                Click="ApplyButton_OnClick"
-                                Command="{Binding .ApplyCommand}"
-                                CommandParameter="{Binding .SelectedContact}"
-                                Content="Apply"
-                                Width="100" />
-                        </StackPanel>
-                    </Grid>
-                </StackPanel>
-            </Border>
-        </Grid>
+                Command="{Binding .ApplyCommand}"
+                CommandParameter="{Binding .SelectedContact}"
+                Content="Apply"
+                Width="100" />
+        </StackPanel>
     </Grid>
 </Window>
