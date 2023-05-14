@@ -16,7 +16,7 @@ public class ContactViewModel : ObservableValidator
         _contact = contact;
         ValidateAllProperties();
     }
-    
+
     [MaxLength(100)]
     [Required(AllowEmptyStrings = false)]
     public string Name
@@ -30,6 +30,9 @@ public class ContactViewModel : ObservableValidator
         }
     }
 
+    [MaxLength(100)]
+    [Required(AllowEmptyStrings = false)]
+    [Phone(ErrorMessage = "Phone Number can contains only digits and symbols '+()- '. Example: +7 (999) 111-22-33")]
     public string PhoneNumber
     {
         get => _contact.Phone;
@@ -41,6 +44,9 @@ public class ContactViewModel : ObservableValidator
         }
     }
 
+    [EmailAddress]
+    [MaxLength(100)]
+    [Required(AllowEmptyStrings = false)]
     public string Email
     {
         get => _contact.Email;
@@ -51,7 +57,7 @@ public class ContactViewModel : ObservableValidator
             OnPropertyChanged();
         }
     }
-    
+
     public bool ReadOnly
     {
         get => _readOnly;

@@ -136,6 +136,7 @@ public sealed class MainViewModel : ObservableObject
         else
         {
             Selecting = false;
+            ContactViewModel = null;
         }
     }
 
@@ -155,6 +156,7 @@ public sealed class MainViewModel : ObservableObject
 
     private void ApplyCommandExecute()
     {
+        if (ContactViewModel != null) ContactViewModel.ReadOnly = true;
         ReadOnly = true;
         Selecting = true;
 
