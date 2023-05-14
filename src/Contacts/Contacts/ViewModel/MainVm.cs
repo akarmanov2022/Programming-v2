@@ -16,13 +16,15 @@ public sealed class MainVm : INotifyPropertyChanged
     /// <summary>
     /// Хранит выбранный контакт.
     /// </summary>
-    private Contact? _selectedContact;
+    private Contact _selectedContact = new();
+
+    private Contact? _copyContact;
 
     /// <summary>
     /// Хранит значение, указывающее, что поля доступны только для чтения.
     /// </summary>
     private bool _readOnly = true;
-    
+
     /// <summary>
     /// Хранит значение, указывающее, что выбран контакт из списка.
     /// </summary>
@@ -108,14 +110,20 @@ public sealed class MainVm : INotifyPropertyChanged
     /// <summary>
     /// Устанавливает и возвращает значение выбранного контакта.
     /// </summary>
-    public Contact? SelectedContact
+    public Contact SelectedContact
     {
         get => _selectedContact;
         set
         {
-            SetField(ref _selectedContact, value);
             ReadOnly = true;
             Selecting = true;
+            if (_copyContact != null)
+            {
+                var indexOf = Contacts.IndexOf(SelectedContact);
+                Contacts[indexOf] = _copyContact;
+                _copyContact = null;
+            }
+            SetField(ref _selectedContact, value);
         }
     }
 
@@ -150,7 +158,7 @@ public sealed class MainVm : INotifyPropertyChanged
             ReadOnly = true;
             Selecting = true;
 
-            if (SelectedContact != null && !Editing)
+            if (!Editing)
             {
                 Contacts.Add(SelectedContact);
             }
@@ -162,6 +170,7 @@ public sealed class MainVm : INotifyPropertyChanged
     /// </summary>
     public RelayCommand EditCommand => _editCommand ??= new RelayCommand(() =>
         {
+            _copyContact = SelectedContact.Clone() as Contact;
             ReadOnly = false;
             Editing = true;
             Selecting = false;
@@ -173,7 +182,6 @@ public sealed class MainVm : INotifyPropertyChanged
     /// </summary>
     public RelayCommand RemoveCommand => _removeCommand ??= new RelayCommand(() =>
         {
-            if (SelectedContact == null) return;
             var indexOf = Contacts.IndexOf(SelectedContact);
             Contacts.Remove(SelectedContact);
             Selecting = indexOf < Contacts.Count;

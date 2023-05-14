@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -7,7 +8,7 @@ namespace Contacts.Model;
 /// <summary>
 /// Определяет контакт.
 /// </summary>
-public sealed class Contact : INotifyPropertyChanged
+public sealed class Contact : INotifyPropertyChanged, ICloneable
 {
     /// <summary>
     /// Хранит имя.
@@ -67,7 +68,7 @@ public sealed class Contact : INotifyPropertyChanged
         get => _phone;
         set => SetField(ref _phone, value);
     }
-    
+
     /// <inheritdoc cref="INotifyPropertyChanged.PropertyChanged"/>
     private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
@@ -88,5 +89,16 @@ public sealed class Contact : INotifyPropertyChanged
         field = value;
         OnPropertyChanged(propertyName);
         return true;
+    }
+
+    public object Clone()
+    {
+        return new Contact
+        {
+            LastName = LastName,
+            FirstName = FirstName,
+            Phone = Phone,
+            Email = Email
+        };
     }
 }
