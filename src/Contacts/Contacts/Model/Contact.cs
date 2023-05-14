@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.CompilerServices;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace Contacts.Model;
@@ -8,82 +10,88 @@ namespace Contacts.Model;
 /// <summary>
 /// Определяет контакт.
 /// </summary>
-public sealed class Contact : ObservableValidator, ICloneable
+public sealed class Contact : INotifyPropertyChanged, ICloneable
 {
     /// <summary>
     /// Хранит имя.
     /// </summary>
-    private string? _firstName;
+    private string _firstName = "";
 
     /// <summary>
     /// Хранит фамилию.
     /// </summary>
-    private string? _lastName;
+    private string _lastName = "";
 
     /// <summary>
     /// Хранит адрес электронной почты.
     /// </summary>
-    private string? _email;
+    private string _email = "";
 
     /// <summary>
     /// Хранит номер телефона.
     /// </summary>
-    private string? _phone;
+    private string _phone = "";
 
-    public Contact()
-    {
-        FirstName = "";
-        LastName = "";
-        Phone = "";
-        Email = "";
-    }
+    public event PropertyChangedEventHandler? PropertyChanged;
+
 
     /// <summary>
     /// Устанавливает и возвращает имя.
     /// </summary>
-    public string? FirstName
+    public string FirstName
     {
         get => _firstName;
-        set => SetProperty(ref _firstName, value, validate: true);
+        set => SetField(ref _firstName, value);
     }
 
     /// <summary>
     /// Устанавливает и возвращает фамилию.
     /// </summary>
-    [MaxLength(100)]
-    [Required(AllowEmptyStrings = false)]
-    public string? LastName
+    public string LastName
     {
         get => _lastName;
-        set => SetProperty(ref _lastName, value, validate: true);
+        set => SetField(ref _lastName, value);
     }
 
     /// <summary>
     /// Устонавливает и возвращает адрес электронной почты.
     /// </summary>
-    public string? Email
+    public string Email
     {
         get => _email;
-        set => SetProperty(ref _email, value, validate: true);
+        set => SetField(ref _email, value);
     }
 
     /// <summary>
     /// Устанавливает и возвращает номер телефона.
     /// </summary>
-    public string? Phone
+    public string Phone
     {
         get => _phone;
-        set => SetProperty(ref _phone, value, validate: true);
+        set => SetField(ref _phone, value);
     }
 
     public object Clone()
     {
         return new Contact
         {
-            _firstName = LastName,
+            LastName = LastName,
             FirstName = FirstName,
             Phone = Phone,
             Email = Email
         };
+    }
+
+    private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+
+    private bool SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
+    {
+        if (EqualityComparer<T>.Default.Equals(field, value)) return false;
+        field = value;
+        OnPropertyChanged(propertyName);
+        return true;
     }
 }

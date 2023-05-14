@@ -9,12 +9,13 @@
         xmlns:model="clr-namespace:Contacts.Model"
         xmlns:controls="clr-namespace:Contacts.Controls"
         mc:Ignorable="d"
-        d:DataContext="{d:DesignInstance viewModel:MainVm}"
+        d:DataContext="{d:DesignInstance viewModel:MainViewModel}"
         Title="Contacts"
         Height="550"
         Width="800">
     <Window.Resources>
-        <view:NegativeBoolToVisibilityConverter x:Key="NegativeBooleanToVisibilityConverter" />
+        <view:BoolToVisibilityInverseConverter x:Key="NegativeBooleanToVisibilityConverter" />
+        <view:BooleanToInverseConverter x:Key="BooleanToInverseConverter" />
         <DataTemplate x:Key="ContactTemplate"
                       DataType="{x:Type model:Contact}">
             <StackPanel Orientation="Horizontal">
@@ -117,8 +118,9 @@
                       HorizontalAlignment="Center"
                       VerticalAlignment="Stretch" />
         <StackPanel Grid.Column="2">
-            <controls:ContactControl />
+            <controls:ContactControl DataContext="{Binding .ContactViewModel, UpdateSourceTrigger=PropertyChanged}" />
             <Button
+                IsEnabled="{Binding .ContactViewModel.HasErrors, Converter={StaticResource BooleanToInverseConverter}}"
                 Visibility="{Binding .ReadOnly, 
                                 Converter={StaticResource NegativeBooleanToVisibilityConverter}}"
                 Command="{Binding .ApplyCommand}"

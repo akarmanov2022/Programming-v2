@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+﻿using System.Collections.ObjectModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Contacts.Model;
 using Contacts.Services;
@@ -11,7 +9,7 @@ namespace Contacts.ViewModel;
 /// <summary>
 /// Определяет модель представления главного окна.
 /// </summary>
-public sealed class MainVm : INotifyPropertyChanged
+public sealed class MainViewModel : ObservableObject
 {
     /// <summary>
     /// Хранит значение, указывающее, что поля доступны только для чтения.
@@ -30,11 +28,13 @@ public sealed class MainVm : INotifyPropertyChanged
 
     private Contact? _copyContact;
 
+    private ContactViewModel? _contactViewModel;
+
     /// <summary>
-    /// Инициализирует новый экземпляр класса <see cref="MainVm"/>.
+    /// Инициализирует новый экземпляр класса <see cref="MainViewModel"/>.
     /// </summary>
     /// <param name="contacts">Коллекция контактов.</param>
-    public MainVm(ObservableCollection<Contact> contacts)
+    public MainViewModel(ObservableCollection<Contact> contacts)
     {
         Contacts = contacts;
 
@@ -43,12 +43,8 @@ public sealed class MainVm : INotifyPropertyChanged
         CloseWindowCommand = new RelayCommand(CloseWindowCommandExecute);
         EditCommand = new RelayCommand(EditCommandExecute);
         RemoveCommand = new RelayCommand(RemoveCommandExecute);
-        ApplyCommand = new RelayCommand(ApplyCommandExecute,
-            () => SelectedContact is { HasErrors: false });
+        ApplyCommand = new RelayCommand(ApplyCommandExecute);
     }
-
-    /// <inheritdoc/>
-    public event PropertyChangedEventHandler? PropertyChanged;
 
     /// <summary>
     /// Возвращает коллекцию контактов.
@@ -62,7 +58,7 @@ public sealed class MainVm : INotifyPropertyChanged
     public bool Selecting
     {
         get => _selecting;
-        set => SetField(ref _selecting, value);
+        set => SetProperty(ref _selecting, value);
     }
 
     /// <summary>
@@ -71,7 +67,7 @@ public sealed class MainVm : INotifyPropertyChanged
     public bool ReadOnly
     {
         get => _readOnly;
-        private set => SetField(ref _readOnly, value);
+        private set => SetProperty(ref _readOnly, value);
     }
 
     /// <summary>
@@ -86,8 +82,15 @@ public sealed class MainVm : INotifyPropertyChanged
             Selecting = true;
             RestoreContact();
 
-            SetField(ref _selectedContact, value);
+            if (!SetProperty(ref _selectedContact, value)) return;
+            if (_selectedContact != null) ContactViewModel = new ContactViewModel(_selectedContact);
         }
+    }
+
+    public ContactViewModel? ContactViewModel
+    {
+        get => _contactViewModel;
+        private set => SetProperty(ref _contactViewModel, value);
     }
 
     /// <summary>
@@ -139,6 +142,7 @@ public sealed class MainVm : INotifyPropertyChanged
     private void EditCommandExecute()
     {
         _copyContact = SelectedContact?.Clone() as Contact;
+        if (ContactViewModel != null) ContactViewModel.ReadOnly = false;
         ReadOnly = false;
         Selecting = false;
     }
@@ -168,6 +172,7 @@ public sealed class MainVm : INotifyPropertyChanged
     private void AddCommandExecute()
     {
         SelectedContact = new Contact();
+        if (ContactViewModel != null) ContactViewModel.ReadOnly = false;
         ReadOnly = false;
         Selecting = false;
     }
@@ -187,28 +192,7 @@ public sealed class MainVm : INotifyPropertyChanged
             var indexOf = Contacts.IndexOf(SelectedContact);
             Contacts[indexOf] = _copyContact;
         }
+
         _copyContact = null;
-    }
-
-    /// <inheritdoc cref="INotifyPropertyChanged.PropertyChanged"/>
-    private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
-
-    /// <summary>
-    /// Устанавливает значение поля и вызывает событие <see cref="PropertyChanged"/>.
-    /// </summary>
-    /// <param name="field">Ссылка на поле.</param>
-    /// <param name="value">Значение поля.</param>
-    /// <param name="propertyName">Имя свойства.</param>
-    /// <typeparam name="T">Тип поля.</typeparam>
-    /// <returns>Возвращает <see langword="true"/>, если значение поля было изменено.</returns>
-    private bool SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
-    {
-        if (EqualityComparer<T>.Default.Equals(field, value)) return false;
-        field = value;
-        OnPropertyChanged(propertyName);
-        return true;
     }
 }

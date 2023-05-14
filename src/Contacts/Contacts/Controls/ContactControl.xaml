@@ -6,7 +6,8 @@
              xmlns:viewModel="clr-namespace:Contacts.ViewModel"
              mc:Ignorable="d"
              d:DesignWidth="300"
-             d:DataContext="{d:DesignInstance viewModel:MainVm}">
+             d:DataContext="{d:DesignInstance viewModel:ContactViewModel}"
+             Validation.ErrorTemplate="{x:Null}">
     <UserControl.Resources>
         <Style x:Key="TextBoxInError"
                TargetType="TextBox">
@@ -64,13 +65,13 @@
 
                         <TextBox IsReadOnly="{Binding .ReadOnly}"
                                  Style="{StaticResource TextBoxInError}"
-                                 Text="{Binding SelectedContact.LastName, UpdateSourceTrigger=PropertyChanged}" />
+                                 Text="{Binding .Name, UpdateSourceTrigger=PropertyChanged}" />
                         <TextBlock Text="Phone Number:" />
-                        <TextBox Text="{Binding SelectedContact.Phone, UpdateSourceTrigger=PropertyChanged}"
+                        <TextBox Text="{Binding PhoneNumber, UpdateSourceTrigger=PropertyChanged}"
                                  Style="{StaticResource TextBoxInError}"
                                  IsReadOnly="{Binding .ReadOnly}" />
                         <TextBlock Text="Email:" />
-                        <TextBox Text="{Binding SelectedContact.Email, UpdateSourceTrigger=PropertyChanged}"
+                        <TextBox Text="{Binding .Email, UpdateSourceTrigger=PropertyChanged}"
                                  Style="{StaticResource TextBoxInError}"
                                  IsReadOnly="{Binding .ReadOnly}" />
                     </StackPanel>
