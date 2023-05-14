@@ -26,8 +26,14 @@ public sealed class MainViewModel : ObservableObject
     /// </summary>
     private Contact? _selectedContact;
 
+    /// <summary>
+    /// Хранит копию контакта.
+    /// </summary>
     private Contact? _copyContact;
 
+    /// <summary>
+    /// Хранит экземпляр класса <see cref="ContactViewModel"/>.
+    /// </summary>
     private ContactViewModel _contactViewModel = new();
 
     /// <summary>
@@ -87,6 +93,9 @@ public sealed class MainViewModel : ObservableObject
         }
     }
 
+    /// <summary>
+    /// Устанавливает и возвращает экземпляр модели представления контакта.
+    /// </summary>
     public ContactViewModel ContactViewModel
     {
         get => _contactViewModel;
@@ -123,6 +132,9 @@ public sealed class MainViewModel : ObservableObject
     /// </summary>
     public RelayCommand? CloseWindowCommand { get; }
 
+    /// <summary>
+    /// Выполняет команду удаления контакта.
+    /// </summary>
     private void RemoveCommandExecute()
     {
         if (SelectedContact == null) return;
@@ -140,6 +152,9 @@ public sealed class MainViewModel : ObservableObject
         }
     }
 
+    /// <summary>
+    /// Выполняет команду редактирования контакта.
+    /// </summary>
     private void EditCommandExecute()
     {
         _copyContact = SelectedContact?.Clone() as Contact;
@@ -148,12 +163,18 @@ public sealed class MainViewModel : ObservableObject
         Selecting = false;
     }
 
+    /// <summary>
+    /// Выполняет команду закрытия окна.
+    /// </summary>
     private void CloseWindowCommandExecute()
     {
         RestoreContact();
         Serializer<ObservableCollection<Contact>>.ToJson(Contacts, App.DefaultSavePath);
     }
 
+    /// <summary>
+    /// Выполняет команду применения изменений.
+    /// </summary>
     private void ApplyCommandExecute()
     {
         ContactViewModel.ReadOnly = true;
@@ -171,6 +192,9 @@ public sealed class MainViewModel : ObservableObject
         }
     }
 
+    /// <summary>
+    /// Выполняет команду добавления контакта.
+    /// </summary>
     private void AddCommandExecute()
     {
         SelectedContact = new Contact();
@@ -179,6 +203,9 @@ public sealed class MainViewModel : ObservableObject
         Selecting = false;
     }
 
+    /// <summary>
+    /// Выполняет команду генерации случайного контакта.
+    /// </summary>
     private void GenerateCommandExecute()
     {
         var contact = ContactFactory.RandomContact();
@@ -186,6 +213,9 @@ public sealed class MainViewModel : ObservableObject
         Contacts.Add(contact);
     }
 
+    /// <summary>
+    /// Сбрасывает изменения.
+    /// </summary>
     private void RestoreContact()
     {
         if (_copyContact == null) return;

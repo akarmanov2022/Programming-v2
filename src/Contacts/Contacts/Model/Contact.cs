@@ -32,6 +32,9 @@ public sealed class Contact : INotifyPropertyChanged, ICloneable
     /// </summary>
     private string? _phone = "";
 
+    /// <summary>
+    /// Задает значение поля и вызывает событие <see cref="PropertyChanged"/>.
+    /// </summary>
     public event PropertyChangedEventHandler? PropertyChanged;
 
 
@@ -71,6 +74,7 @@ public sealed class Contact : INotifyPropertyChanged, ICloneable
         set => SetField(ref _phone, value);
     }
 
+    /// <inheritdoc cref="ICloneable.Clone"/>
     public object Clone()
     {
         return new Contact
@@ -82,11 +86,23 @@ public sealed class Contact : INotifyPropertyChanged, ICloneable
         };
     }
 
+    /// <summary>
+    /// Вызывает событие <see cref="PropertyChanged"/>.
+    /// </summary>
+    /// <param name="propertyName">Имя свойства.</param>
     private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
+    /// <summary>
+    /// Устанавливает значение поля и вызывает событие <see cref="PropertyChanged"/>.
+    /// </summary>
+    /// <param name="field">Имя поля.</param>
+    /// <param name="value">Значение.</param>
+    /// <param name="propertyName">Имя свойства.</param>
+    /// <typeparam name="T">Тип поля.</typeparam>
+    /// <returns>Возвращает <see langword="true"/> если значение поля было изменено, иначе <see langword="false"/>.</returns>
     private bool SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
     {
         if (EqualityComparer<T>.Default.Equals(field, value)) return false;
