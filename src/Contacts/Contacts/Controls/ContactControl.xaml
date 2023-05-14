@@ -3,12 +3,46 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:Contacts.Controls"
              xmlns:viewModel="clr-namespace:Contacts.ViewModel"
              mc:Ignorable="d"
              d:DesignWidth="300"
              d:DataContext="{d:DesignInstance viewModel:MainVm}">
+    <UserControl.Resources>
+        <Style x:Key="TextBoxInError"
+               TargetType="TextBox">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError"
+                         Value="true">
+                    <Setter Property="Background"
+                            Value="#FFDDDD" />
+                    <Setter Property="ToolTip"
+                            Value="{Binding RelativeSource={x:Static RelativeSource.Self},
+                    Path=(Validation.Errors)[0].ErrorContent}" />
+                </Trigger>
+            </Style.Triggers>
+            <Setter Property="Validation.ErrorTemplate"
+                    Value="{x:Null}" />
+        </Style>
+    </UserControl.Resources>
     <Grid>
+        <Grid.Resources>
+            <Style TargetType="Border">
+                <Setter Property="Padding"
+                        Value="8" />
+            </Style>
+            <Style TargetType="Button">
+                <Setter Property="Margin"
+                        Value="3" />
+            </Style>
+            <Style TargetType="TextBlock">
+                <Setter Property="Margin"
+                        Value="3" />
+            </Style>
+            <Style TargetType="TextBox">
+                <Setter Property="Margin"
+                        Value="3" />
+            </Style>
+        </Grid.Resources>
         <Border>
             <StackPanel Orientation="Vertical">
                 <Grid>
@@ -24,18 +58,20 @@
                            Grid.Row="0"
                            Source="../Resources/Img/photo_placeholder_100x100.png" />
                     <StackPanel Grid.Column="1"
-                                Grid.Row="0">
+                                Grid.Row="0"
+                                Margin="3, 0, 0, 0">
                         <TextBlock Text="Name:" />
-                        <TextBox Name="TbName"
-                                 IsReadOnly="{Binding .ReadOnly}"
+
+                        <TextBox IsReadOnly="{Binding .ReadOnly}"
+                                 Style="{StaticResource TextBoxInError}"
                                  Text="{Binding SelectedContact.LastName, UpdateSourceTrigger=PropertyChanged}" />
                         <TextBlock Text="Phone Number:" />
-                        <TextBox Name="TbPhone"
-                                 Text="{Binding SelectedContact.Phone, UpdateSourceTrigger=PropertyChanged}"
+                        <TextBox Text="{Binding SelectedContact.Phone, UpdateSourceTrigger=PropertyChanged}"
+                                 Style="{StaticResource TextBoxInError}"
                                  IsReadOnly="{Binding .ReadOnly}" />
                         <TextBlock Text="Email:" />
-                        <TextBox Name="TbEmail"
-                                 Text="{Binding SelectedContact.Email, UpdateSourceTrigger=PropertyChanged}"
+                        <TextBox Text="{Binding SelectedContact.Email, UpdateSourceTrigger=PropertyChanged}"
+                                 Style="{StaticResource TextBoxInError}"
                                  IsReadOnly="{Binding .ReadOnly}" />
                     </StackPanel>
                 </Grid>

@@ -14,13 +14,6 @@ namespace Contacts.ViewModel;
 public sealed class MainVm : INotifyPropertyChanged
 {
     /// <summary>
-    /// Хранит выбранный контакт.
-    /// </summary>
-    private Contact _selectedContact = new();
-
-    private Contact? _copyContact;
-
-    /// <summary>
     /// Хранит значение, указывающее, что поля доступны только для чтения.
     /// </summary>
     private bool _readOnly = true;
@@ -31,34 +24,11 @@ public sealed class MainVm : INotifyPropertyChanged
     private bool _selecting;
 
     /// <summary>
-    /// Хранит команду генерации случайного контакта.
+    /// Хранит выбранный контакт.
     /// </summary>
-    private RelayCommand? _generateCommand;
+    private Contact? _selectedContact;
 
-    /// <summary>
-    /// Хранит команду добавления контакта.
-    /// </summary>
-    private RelayCommand? _addCommand;
-
-    /// <summary>
-    /// Хранит команду редактирования контакта.
-    /// </summary>
-    private RelayCommand? _editCommand;
-
-    /// <summary>
-    /// Хранит команду применения изменений.
-    /// </summary>
-    private RelayCommand? _applyCommand;
-
-    /// <summary>
-    /// Хранит команду удаления контакта.
-    /// </summary>
-    private RelayCommand? _removeCommand;
-
-    /// <summary>
-    /// Хранит команду закрытия окна.
-    /// </summary>
-    private RelayCommand? _closeWindowCommand;
+    private Contact? _copyContact;
 
     /// <summary>
     /// Инициализирует новый экземпляр класса <see cref="MainVm"/>.
@@ -67,13 +37,14 @@ public sealed class MainVm : INotifyPropertyChanged
     public MainVm(ObservableCollection<Contact> contacts)
     {
         Contacts = contacts;
-    }
 
-    /// <summary>
-    /// Конструктор по умолчанию.
-    /// </summary>
-    public MainVm()
-    {
+        GenerateCommand = new RelayCommand(GenerateCommandExecute);
+        AddCommand = new RelayCommand(AddCommandExecute);
+        CloseWindowCommand = new RelayCommand(CloseWindowCommandExecute);
+        EditCommand = new RelayCommand(EditCommandExecute);
+        RemoveCommand = new RelayCommand(RemoveCommandExecute);
+        ApplyCommand = new RelayCommand(ApplyCommandExecute,
+            () => SelectedContact is { HasErrors: false });
     }
 
     /// <inheritdoc/>
@@ -82,8 +53,8 @@ public sealed class MainVm : INotifyPropertyChanged
     /// <summary>
     /// Возвращает коллекцию контактов.
     /// </summary>
-    public ObservableCollection<Contact> Contacts { get; } = null!;
-    
+    public ObservableCollection<Contact> Contacts { get; }
+
 
     /// <summary>
     /// Устанавливает и возвращает значение, указывающее, что выбран контакт.
@@ -106,19 +77,14 @@ public sealed class MainVm : INotifyPropertyChanged
     /// <summary>
     /// Устанавливает и возвращает значение выбранного контакта.
     /// </summary>
-    public Contact SelectedContact
+    public Contact? SelectedContact
     {
         get => _selectedContact;
         set
         {
             ReadOnly = true;
             Selecting = true;
-            if (_copyContact != null)
-            {
-                var indexOf = Contacts.IndexOf(SelectedContact);
-                Contacts[indexOf] = _copyContact;
-                _copyContact = null;
-            }
+            RestoreContact();
 
             SetField(ref _selectedContact, value);
         }
@@ -127,78 +93,102 @@ public sealed class MainVm : INotifyPropertyChanged
     /// <summary>
     /// Возвращает команду генерации случайного контакта.
     /// </summary>
-    public RelayCommand GenerateCommand => _generateCommand ??= new RelayCommand(() =>
-        {
-            var contact = ContactFactory.RandomContact();
-            if (contact == null) return;
-            Contacts.Add(contact);
-        }
-    );
+    public RelayCommand? GenerateCommand { get; }
 
     /// <summary>
     /// Возвращает команду добавления контакта.
     /// </summary>
-    public RelayCommand AddCommand => _addCommand ??= new RelayCommand(() =>
-        {
-            SelectedContact = new Contact();
-            ReadOnly = false;
-            Selecting = false;
-        }
-    );
+    public RelayCommand? AddCommand { get; }
 
     /// <summary>
     /// Возвращает команду применения изменений.
     /// </summary>
-    public RelayCommand ApplyCommand => _applyCommand ??= new RelayCommand(() =>
-        {
-            ReadOnly = true;
-            Selecting = true;
-
-            if (_copyContact != null)
-            {
-                _copyContact = null;
-                return;
-            }
-
-            Contacts.Add(SelectedContact);
-        }
-    );
+    public RelayCommand? ApplyCommand { get; }
 
     /// <summary>
     /// Возвращает команду редактирования контакта.
     /// </summary>
-    public RelayCommand EditCommand => _editCommand ??= new RelayCommand(() =>
-        {
-            _copyContact = SelectedContact.Clone() as Contact;
-            ReadOnly = false;
-            Selecting = false;
-        }
-    );
+    public RelayCommand? EditCommand { get; }
 
     /// <summary>
     /// Возвращает команду удаления контакта.
     /// </summary>
-    public RelayCommand RemoveCommand => _removeCommand ??= new RelayCommand(() =>
-        {
-            var indexOf = Contacts.IndexOf(SelectedContact);
-            Contacts.Remove(SelectedContact);
-            Selecting = indexOf < Contacts.Count;
-            if (indexOf < Contacts.Count)
-            {
-                SelectedContact = Contacts[indexOf];
-            }
-            else
-            {
-                Selecting = false;
-            }
-        }
-    );
+    public RelayCommand? RemoveCommand { get; }
 
     /// <summary>
     /// Возвращает команду закрытия окна.
     /// </summary>
-    public RelayCommand CloseWindowCommand => _closeWindowCommand ??= new RelayCommand(() =>
-        Serializer<ObservableCollection<Contact>>.ToJson(Contacts, App.DefaultSavePath));
+    public RelayCommand? CloseWindowCommand { get; }
+
+    private void RemoveCommandExecute()
+    {
+        if (SelectedContact == null) return;
+        var indexOf = Contacts.IndexOf(SelectedContact);
+        Contacts.Remove(SelectedContact);
+        Selecting = indexOf < Contacts.Count;
+        if (indexOf < Contacts.Count)
+        {
+            SelectedContact = Contacts[indexOf];
+        }
+        else
+        {
+            Selecting = false;
+        }
+    }
+
+    private void EditCommandExecute()
+    {
+        _copyContact = SelectedContact?.Clone() as Contact;
+        ReadOnly = false;
+        Selecting = false;
+    }
+
+    private void CloseWindowCommandExecute()
+    {
+        RestoreContact();
+        Serializer<ObservableCollection<Contact>>.ToJson(Contacts, App.DefaultSavePath);
+    }
+
+    private void ApplyCommandExecute()
+    {
+        ReadOnly = true;
+        Selecting = true;
+
+        if (_copyContact == null)
+        {
+            if (SelectedContact == null) return;
+            Contacts.Add(SelectedContact);
+        }
+        else
+        {
+            _copyContact = null;
+        }
+    }
+
+    private void AddCommandExecute()
+    {
+        SelectedContact = new Contact();
+        ReadOnly = false;
+        Selecting = false;
+    }
+
+    private void GenerateCommandExecute()
+    {
+        var contact = ContactFactory.RandomContact();
+        if (contact == null) return;
+        Contacts.Add(contact);
+    }
+
+    private void RestoreContact()
+    {
+        if (_copyContact == null) return;
+        if (SelectedContact != null)
+        {
+            var indexOf = Contacts.IndexOf(SelectedContact);
+            Contacts[indexOf] = _copyContact;
+        }
+        _copyContact = null;
+    }
 
     /// <inheritdoc cref="INotifyPropertyChanged.PropertyChanged"/>
     private void OnPropertyChanged([CallerMemberName] string? propertyName = null)

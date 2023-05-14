@@ -1,6 +1,5 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows;
-using System.Windows.Controls;
 using Contacts.Model;
 using Contacts.Services;
 using Contacts.ViewModel;

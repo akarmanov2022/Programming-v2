@@ -14,7 +14,7 @@
         Height="550"
         Width="800">
     <Window.Resources>
-        <view:NegativeBoolToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <view:NegativeBoolToVisibilityConverter x:Key="NegativeBooleanToVisibilityConverter" />
         <DataTemplate x:Key="ContactTemplate"
                       DataType="{x:Type model:Contact}">
             <StackPanel Orientation="Horizontal">
@@ -24,8 +24,10 @@
                 <StackPanel Orientation="Vertical"
                             Margin="3">
                     <TextBlock Text="{Binding LastName}"
+                               Validation.ErrorTemplate="{x:Null}"
                                FontWeight="Bold" />
-                    <TextBlock Text="{Binding Phone}" />
+                    <TextBlock Text="{Binding Phone}"
+                               Validation.ErrorTemplate="{x:Null}" />
                 </StackPanel>
             </StackPanel>
         </DataTemplate>
@@ -79,6 +81,7 @@
                     </Grid>
                     <ListBox Grid.Row="1"
                              Margin="3"
+                             Validation.ErrorTemplate="{x:Null}"
                              SelectedItem="{Binding .SelectedContact, UpdateSourceTrigger=PropertyChanged}"
                              ItemsSource="{Binding .Contacts}"
                              ItemTemplate="{StaticResource ContactTemplate}" />
@@ -114,12 +117,11 @@
                       HorizontalAlignment="Center"
                       VerticalAlignment="Stretch" />
         <StackPanel Grid.Column="2">
-            <controls:ContactControl></controls:ContactControl>
+            <controls:ContactControl />
             <Button
                 Visibility="{Binding .ReadOnly, 
-                                Converter={StaticResource BooleanToVisibilityConverter}}"
+                                Converter={StaticResource NegativeBooleanToVisibilityConverter}}"
                 Command="{Binding .ApplyCommand}"
-                CommandParameter="{Binding .SelectedContact}"
                 Content="Apply"
                 Width="100" />
         </StackPanel>
