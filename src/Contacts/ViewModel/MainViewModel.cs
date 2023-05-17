@@ -4,7 +4,7 @@ using CommunityToolkit.Mvvm.Input;
 using Contacts.Model;
 using Model.Services;
 
-namespace ViewModel.ViewModel;
+namespace ViewModel;
 
 /// <summary>
 /// Определяет модель представления главного окна.
@@ -38,7 +38,7 @@ public sealed partial class MainViewModel : ObservableObject
     /// Хранит экземпляр класса <see cref="ContactViewModel"/>.
     /// </summary>
     [ObservableProperty]
-    private ContactViewModel _contactViewModel = new();
+    private global::ViewModel.ContactViewModel _contactViewModel = new();
 
     /// <summary>
     /// Инициализирует новый экземпляр класса <see cref="MainViewModel"/>.
@@ -74,7 +74,7 @@ public sealed partial class MainViewModel : ObservableObject
             RestoreContact();
 
             if (!SetProperty(ref _selectedContact, value)) return;
-            if (_selectedContact != null) ContactViewModel = new ContactViewModel(_selectedContact);
+            if (_selectedContact != null) ContactViewModel = new global::ViewModel.ContactViewModel(_selectedContact);
         }
     }
 
@@ -124,7 +124,7 @@ public sealed partial class MainViewModel : ObservableObject
         else
         {
             Selecting = false;
-            ContactViewModel = new ContactViewModel();
+            ContactViewModel = new global::ViewModel.ContactViewModel();
         }
     }
 
