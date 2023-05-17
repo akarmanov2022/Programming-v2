@@ -8,7 +8,7 @@ namespace Contacts.View;
 /// <summary>
 /// Конвертирует значение <see cref="bool"/> в <see cref="Visibility"/>.
 /// </summary>
-public class NegativeBoolToVisibilityConverter : IValueConverter
+public class BoolToVisibilityInverseConverter : IValueConverter
 {
     /// <inheritdoc/>
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

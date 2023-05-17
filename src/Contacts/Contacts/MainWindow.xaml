@@ -6,13 +6,32 @@
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:viewModel="clr-namespace:Contacts.ViewModel"
         xmlns:view="clr-namespace:Contacts.View"
+        xmlns:model="clr-namespace:Contacts.Model"
+        xmlns:controls="clr-namespace:Contacts.Controls"
         mc:Ignorable="d"
-        d:DataContext="{d:DesignInstance viewModel:MainVm}"
+        d:DataContext="{d:DesignInstance viewModel:MainViewModel}"
         Title="Contacts"
         Height="550"
         Width="800">
     <Window.Resources>
-        <view:NegativeBoolToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <view:BoolToVisibilityInverseConverter x:Key="NegativeBooleanToVisibilityConverter" />
+        <view:BooleanToInverseConverter x:Key="BooleanToInverseConverter" />
+        <DataTemplate x:Key="ContactTemplate"
+                      DataType="{x:Type model:Contact}">
+            <StackPanel Orientation="Horizontal">
+                <Image Width="32"
+                       Height="32"
+                       Source="Resources/Img/photo_placeholder_100x100.png" />
+                <StackPanel Orientation="Vertical"
+                            Margin="3">
+                    <TextBlock Text="{Binding LastName}"
+                               Validation.ErrorTemplate="{x:Null}"
+                               FontWeight="Bold" />
+                    <TextBlock Text="{Binding Phone}"
+                               Validation.ErrorTemplate="{x:Null}" />
+                </StackPanel>
+            </StackPanel>
+        </DataTemplate>
     </Window.Resources>
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closing">
@@ -63,9 +82,10 @@
                     </Grid>
                     <ListBox Grid.Row="1"
                              Margin="3"
-                             DisplayMemberPath="LastName"
+                             Validation.ErrorTemplate="{x:Null}"
                              SelectedItem="{Binding .SelectedContact, UpdateSourceTrigger=PropertyChanged}"
-                             ItemsSource="{Binding .Contacts}" />
+                             ItemsSource="{Binding .Contacts}"
+                             ItemTemplate="{StaticResource ContactTemplate}" />
                     <Grid Grid.Row="2">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
@@ -97,51 +117,15 @@
                       Width="3"
                       HorizontalAlignment="Center"
                       VerticalAlignment="Stretch" />
-        <Grid Grid.Column="2">
-            <Border>
-                <StackPanel Orientation="Vertical">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition />
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-                        <Image Grid.Column="0"
-                               Grid.Row="0"
-                               Source="Resources/Img/photo_placeholder_100x100.png" />
-                        <StackPanel Grid.Column="1"
-                                    Grid.Row="0">
-                            <TextBlock Text="Name:" />
-                            <TextBox Name="TbName"
-                                     IsReadOnly="{Binding .ReadOnly}"
-                                     Text="{Binding SelectedContact.LastName, UpdateSourceTrigger=PropertyChanged}" />
-                            <TextBlock Text="Phone Number:" />
-                            <TextBox Name="TbPhone"
-                                     Text="{Binding SelectedContact.Phone}"
-                                     IsReadOnly="{Binding .ReadOnly}" />
-                            <TextBlock Text="Email:" />
-                            <TextBox Name="TbEmail"
-                                     Text="{Binding SelectedContact.Email}"
-                                     IsReadOnly="{Binding .ReadOnly}" />
-                        </StackPanel>
-                        <StackPanel Grid.Column="1"
-                                    Grid.Row="1"
-                                    Orientation="Horizontal">
-                            <Button
-                                Visibility="{Binding .ReadOnly, 
-                                Converter={StaticResource BooleanToVisibilityConverter}}"
-                                Click="ApplyButton_OnClick"
-                                Command="{Binding .ApplyCommand}"
-                                CommandParameter="{Binding .SelectedContact}"
-                                Content="Apply"
-                                Width="100" />
-                        </StackPanel>
-                    </Grid>
-                </StackPanel>
-            </Border>
-        </Grid>
+        <StackPanel Grid.Column="2">
+            <controls:ContactControl DataContext="{Binding .ContactViewModel, UpdateSourceTrigger=PropertyChanged}" />
+            <Button
+                IsEnabled="{Binding .ContactViewModel.HasErrors, Converter={StaticResource BooleanToInverseConverter}}"
+                Visibility="{Binding .ReadOnly, 
+                                Converter={StaticResource NegativeBooleanToVisibilityConverter}}"
+                Command="{Binding .ApplyCommand}"
+                Content="Apply"
+                Width="100" />
+        </StackPanel>
     </Grid>
 </Window>

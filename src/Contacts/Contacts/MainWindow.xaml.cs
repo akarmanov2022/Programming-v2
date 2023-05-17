@@ -1,6 +1,5 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows;
-using System.Windows.Controls;
 using Contacts.Model;
 using Contacts.Services;
 using Contacts.ViewModel;
@@ -19,14 +18,7 @@ namespace Contacts
             var contacts =
                 Serializer<ObservableCollection<Contact>>.FromJson(App.DefaultSavePath)
                 ?? new ObservableCollection<Contact>();
-            DataContext = new MainVm(contacts);
-        }
-
-        private void ApplyButton_OnClick(object sender, RoutedEventArgs e)
-        {
-            TbName.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
-            TbEmail.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
-            TbPhone.GetBindingExpression(TextBox.TextProperty)?.UpdateSource();
+            DataContext = new MainViewModel(contacts);
         }
     }
 }
