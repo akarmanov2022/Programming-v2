@@ -2,24 +2,32 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Contacts.Model;
-using Contacts.Services;
+using Model.Services;
 
-namespace Contacts.ViewModel;
+namespace ViewModel;
 
 /// <summary>
 /// Определяет модель представления главного окна.
 /// </summary>
-public sealed class MainViewModel : ObservableObject
+public sealed partial class MainViewModel : ObservableObject
 {
     /// <summary>
     /// Хранит значение, указывающее, что поля доступны только для чтения.
     /// </summary>
+    [ObservableProperty]
     private bool _readOnly = true;
 
     /// <summary>
     /// Хранит значение, указывающее, что выбран контакт из списка.
     /// </summary>
+    [ObservableProperty]
     private bool _selecting;
+
+    /// <summary>
+    /// Хранит копию контакта.
+    /// </summary>
+    [ObservableProperty]
+    private Contact? _copyContact;
 
     /// <summary>
     /// Хранит выбранный контакт.
@@ -27,14 +35,10 @@ public sealed class MainViewModel : ObservableObject
     private Contact? _selectedContact;
 
     /// <summary>
-    /// Хранит копию контакта.
-    /// </summary>
-    private Contact? _copyContact;
-
-    /// <summary>
     /// Хранит экземпляр класса <see cref="ContactViewModel"/>.
     /// </summary>
-    private ContactViewModel _contactViewModel = new();
+    [ObservableProperty]
+    private global::ViewModel.ContactViewModel _contactViewModel = new();
 
     /// <summary>
     /// Инициализирует новый экземпляр класса <see cref="MainViewModel"/>.
@@ -57,25 +61,6 @@ public sealed class MainViewModel : ObservableObject
     /// </summary>
     public ObservableCollection<Contact> Contacts { get; }
 
-
-    /// <summary>
-    /// Устанавливает и возвращает значение, указывающее, что выбран контакт.
-    /// </summary>
-    public bool Selecting
-    {
-        get => _selecting;
-        set => SetProperty(ref _selecting, value);
-    }
-
-    /// <summary>
-    /// Устанавливает и возвращает значение, указывающее, что поля доступны только для чтения.
-    /// </summary>
-    public bool ReadOnly
-    {
-        get => _readOnly;
-        private set => SetProperty(ref _readOnly, value);
-    }
-
     /// <summary>
     /// Устанавливает и возвращает значение выбранного контакта.
     /// </summary>
@@ -89,17 +74,8 @@ public sealed class MainViewModel : ObservableObject
             RestoreContact();
 
             if (!SetProperty(ref _selectedContact, value)) return;
-            if (_selectedContact != null) ContactViewModel = new ContactViewModel(_selectedContact);
+            if (_selectedContact != null) ContactViewModel = new global::ViewModel.ContactViewModel(_selectedContact);
         }
-    }
-
-    /// <summary>
-    /// Устанавливает и возвращает экземпляр модели представления контакта.
-    /// </summary>
-    public ContactViewModel ContactViewModel
-    {
-        get => _contactViewModel;
-        private set => SetProperty(ref _contactViewModel, value);
     }
 
     /// <summary>
@@ -148,7 +124,7 @@ public sealed class MainViewModel : ObservableObject
         else
         {
             Selecting = false;
-            ContactViewModel = new ContactViewModel();
+            ContactViewModel = new global::ViewModel.ContactViewModel();
         }
     }
 
@@ -157,7 +133,7 @@ public sealed class MainViewModel : ObservableObject
     /// </summary>
     private void EditCommandExecute()
     {
-        _copyContact = SelectedContact?.Clone() as Contact;
+        CopyContact = SelectedContact?.Clone() as Contact;
         ContactViewModel.ReadOnly = false;
         ReadOnly = false;
         Selecting = false;
@@ -169,7 +145,7 @@ public sealed class MainViewModel : ObservableObject
     private void CloseWindowCommandExecute()
     {
         RestoreContact();
-        Serializer<ObservableCollection<Contact>>.ToJson(Contacts, App.DefaultSavePath);
+        Serializer<ObservableCollection<Contact>>.ToJson(Contacts);
     }
 
     /// <summary>
@@ -181,14 +157,14 @@ public sealed class MainViewModel : ObservableObject
         ReadOnly = true;
         Selecting = true;
 
-        if (_copyContact == null)
+        if (CopyContact == null)
         {
             if (SelectedContact == null) return;
             Contacts.Add(SelectedContact);
         }
         else
         {
-            _copyContact = null;
+            CopyContact = null;
         }
     }
 
@@ -218,13 +194,13 @@ public sealed class MainViewModel : ObservableObject
     /// </summary>
     private void RestoreContact()
     {
-        if (_copyContact == null) return;
+        if (CopyContact == null) return;
         if (SelectedContact != null)
         {
             var indexOf = Contacts.IndexOf(SelectedContact);
-            Contacts[indexOf] = _copyContact;
+            Contacts[indexOf] = CopyContact;
         }
 
-        _copyContact = null;
+        CopyContact = null;
     }
 }

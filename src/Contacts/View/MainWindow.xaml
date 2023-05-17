@@ -4,10 +4,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-        xmlns:viewModel="clr-namespace:Contacts.ViewModel"
         xmlns:view="clr-namespace:Contacts.View"
-        xmlns:model="clr-namespace:Contacts.Model"
         xmlns:controls="clr-namespace:Contacts.Controls"
+        xmlns:model1="clr-namespace:Contacts.Model;assembly=Model"
+        xmlns:viewModel="clr-namespace:ViewModel;assembly=ViewModel"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance viewModel:MainViewModel}"
         Title="Contacts"
@@ -17,7 +17,7 @@
         <view:BoolToVisibilityInverseConverter x:Key="NegativeBooleanToVisibilityConverter" />
         <view:BooleanToInverseConverter x:Key="BooleanToInverseConverter" />
         <DataTemplate x:Key="ContactTemplate"
-                      DataType="{x:Type model:Contact}">
+                      DataType="{x:Type model1:Contact}">
             <StackPanel Orientation="Horizontal">
                 <Image Width="32"
                        Height="32"

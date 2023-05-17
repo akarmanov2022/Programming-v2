@@ -1,0 +1,15 @@
+D:\Workspace\TUSUR\OOP\Programming-v2\src\Contacts\ViewModel\obj\Debug\net7.0\ViewModel.csproj.AssemblyReference.cache
+D:\Workspace\TUSUR\OOP\Programming-v2\src\Contacts\ViewModel\obj\Debug\net7.0\ViewModel.GeneratedMSBuildEditorConfig.editorconfig
+D:\Workspace\TUSUR\OOP\Programming-v2\src\Contacts\ViewModel\obj\Debug\net7.0\ViewModel.AssemblyInfoInputs.cache
+D:\Workspace\TUSUR\OOP\Programming-v2\src\Contacts\ViewModel\obj\Debug\net7.0\ViewModel.AssemblyInfo.cs
+D:\Workspace\TUSUR\OOP\Programming-v2\src\Contacts\ViewModel\obj\Debug\net7.0\ViewModel.csproj.CoreCompileInputs.cache
+D:\Workspace\TUSUR\OOP\Programming-v2\src\Contacts\ViewModel\bin\Debug\net7.0\ViewModel.deps.json
+D:\Workspace\TUSUR\OOP\Programming-v2\src\Contacts\ViewModel\bin\Debug\net7.0\ViewModel.dll
+D:\Workspace\TUSUR\OOP\Programming-v2\src\Contacts\ViewModel\bin\Debug\net7.0\ViewModel.pdb
+D:\Workspace\TUSUR\OOP\Programming-v2\src\Contacts\ViewModel\bin\Debug\net7.0\Model.dll
+D:\Workspace\TUSUR\OOP\Programming-v2\src\Contacts\ViewModel\bin\Debug\net7.0\Model.pdb
+D:\Workspace\TUSUR\OOP\Programming-v2\src\Contacts\ViewModel\obj\Debug\net7.0\ViewModel.csproj.CopyComplete
+D:\Workspace\TUSUR\OOP\Programming-v2\src\Contacts\ViewModel\obj\Debug\net7.0\ViewModel.dll
+D:\Workspace\TUSUR\OOP\Programming-v2\src\Contacts\ViewModel\obj\Debug\net7.0\refint\ViewModel.dll
+D:\Workspace\TUSUR\OOP\Programming-v2\src\Contacts\ViewModel\obj\Debug\net7.0\ViewModel.pdb
+D:\Workspace\TUSUR\OOP\Programming-v2\src\Contacts\ViewModel\obj\Debug\net7.0\ref\ViewModel.dll

@@ -2,12 +2,12 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using Contacts.Model;
 
-namespace Contacts.ViewModel;
+namespace ViewModel;
 
 /// <summary>
 /// Модель представления контакта.
 /// </summary>
-public class ContactViewModel : ObservableValidator
+public partial class ContactViewModel : ObservableValidator
 {
     /// <summary>
     /// Хранит контакт.
@@ -17,6 +17,7 @@ public class ContactViewModel : ObservableValidator
     /// <summary>
     /// Хранит значение, указывающее, что поля доступны только для чтения.
     /// </summary>
+    [ObservableProperty]
     private bool _readOnly = true;
 
 
@@ -84,14 +85,5 @@ public class ContactViewModel : ObservableValidator
             _contact.Email = value;
             OnPropertyChanged();
         }
-    }
-
-    /// <summary>
-    /// Устанавливает и возвращает значение, указывающее, что поля доступны только для чтения.
-    /// </summary>
-    public bool ReadOnly
-    {
-        get => _readOnly;
-        set => SetProperty(ref _readOnly, value);
     }
 }

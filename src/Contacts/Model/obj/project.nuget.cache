@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "1tS236BrAu8E6ca/8Rz5I2aDKPSYgG0J1OFWpyID5+C4XjSGh9EWt+CJEK1IEGF12hdbc6IUGuQxr+NH0wfa9Q==",
+  "success": true,
+  "projectFilePath": "D:\\Workspace\\TUSUR\\OOP\\Programming-v2\\src\\Contacts\\Model\\Model.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\arsen\\.nuget\\packages\\communitytoolkit.mvvm\\8.2.0\\communitytoolkit.mvvm.8.2.0.nupkg.sha512",
+    "C:\\Users\\arsen\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}
