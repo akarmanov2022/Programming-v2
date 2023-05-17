@@ -44,8 +44,8 @@ public class ContactViewModel : ObservableValidator
         set
         {
             if (_contact == null) return;
-            _contact.LastName = value;
             ValidateProperty(value);
+            _contact.LastName = value;
             OnPropertyChanged();
         }
     }
@@ -62,8 +62,8 @@ public class ContactViewModel : ObservableValidator
         set
         {
             if (_contact == null) return;
-            _contact.Phone = value;
             ValidateProperty(value);
+            _contact.Phone = value;
             OnPropertyChanged();
         }
     }
@@ -80,8 +80,8 @@ public class ContactViewModel : ObservableValidator
         set
         {
             if (_contact == null) return;
-            _contact.Email = value;
             ValidateProperty(value);
+            _contact.Email = value;
             OnPropertyChanged();
         }
     }
